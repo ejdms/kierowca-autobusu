@@ -1,0 +1,174 @@
+$bgColor: #333;
+$txtColor: #fff;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  color: $txtColor;
+  font-family: sans-serif;
+}
+
+html::-webkit-scrollbar {
+  width: 1em;
+}
+
+html::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.main-wrapper {
+  min-height: 100vh;
+  background-color: $bgColor;
+}
+
+.btn {
+  background: transparent;
+  border: 1px solid #fff;
+  padding: 10px 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.start-screen {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+
+  &:before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: $bgColor;
+  }
+
+  .filled {
+    width: 100%;
+    height: 100vh;
+    max-width: 600px;
+    max-height: 600px;
+    // background-color: #000;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+
+    .upper {
+      --padding: 40px;
+      display: flex;
+      flex-flow: row nowrap;
+      width: 100%;
+      max-width: calc(100% - var(--padding) * 2);
+      overflow-x: auto;
+
+      .add-player-card {
+        border: 1px solid #fff;
+        flex-shrink: 0;
+        flex-basis: 100px;
+        height: 100px;
+        background-color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column nowrap;
+
+        + .add-player-card {
+          margin-left: 20px;
+        }
+
+        &.addNew {
+          input[type="text"] {
+            width: 80%;
+            display: block;
+          }
+        }
+      }
+
+      .display {
+        pointer-events: none;
+        width: 40px;
+        height: 20px;
+        background-color: #fff;
+        color: #000;
+      }
+    }
+  }
+}
+
+.game-board {
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
+  .table {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+
+    .row {
+      display: flex;
+      margin: 5px 0;
+
+      .card-on-table {
+        + .card-on-table {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .players-hands {
+    margin-top: 30px;
+    // position: absolute;
+    // left: 0;
+    // bottom: 10px;
+    width: 100%;
+    display: flex;
+    align-self: flex-end;
+    justify-content: center;
+
+    .player-hand {
+      + .player-hand {
+        margin-left: 20px;
+      }
+    }
+
+    .player-cards {
+      display: flex;
+    }
+  }
+}
+
+.card-on-hand,
+.card-on-table {
+  width: 60px;
+  height: 90px;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
