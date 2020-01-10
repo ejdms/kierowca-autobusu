@@ -1,12 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PlayerHand from "./PlayerHand";
 import GameTable from "./GameTable";
 import Card from "./Card";
 
 const GameBoard = ({ game, setGame, players, setPlayers }) => {
-  const [text, setText] = useState("Next card");
+  const [btnText, setBtnText] = useState("Next card");
   const [canClickOnButton, setCanClickOnButton] = useState(true);
   const [giveSips, setGiveSips] = useState([]);
+  const [giveSipsText, setGiveSipsText] = useState("");
+
+  useEffect(() => {
+    if (giveSips.length) {
+      setCanClickOnButton(false);
+
+      // alow click on player hand but not on current player hand
+      const currentPlayer = giveSips[0].player;
+      const sips = giveSips[0].sips;
+      setPlayers([
+        ...players.map(player => {
+          player.canClickOnHand = !(player.id === currentPlayer.id);
+          return player;
+        })
+      ]);
+      setGiveSipsText(
+        `Player ${currentPlayer.name} give ${sips} ${
+          sips === 1 ? "sip" : "sips"
+        } to other player (click on other player cards)`
+      );
+    } else {
+      setCanClickOnButton(true);
+      setGiveSipsText("");
+      setPlayers([
+        ...players.map(player => {
+          player.canClickOnHand = false;
+          return player;
+        })
+      ]);
+    }
+  }, [giveSips]);
 
   const handleClickOnNextCardBtn = () => {
     console.log("EXEC: handleClickOnNextCardBtn");
@@ -44,11 +75,8 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
 
           playerCards.forEach(playerCard => {
             if (playerCard.symbol === card.symbol) {
-              if (card.action === "drink") {
+              if (card.action.type === "drink") {
                 const newPlayers = players.map(player => {
-                  console.log(`
-                  player.id: ${player.id}
-                  playerWithTheSameCard.id: ${playerWithTheSameCard.id}`);
                   if (player.id === playerWithTheSameCard.id) {
                     player.sips = player.sips + card.action.number;
                   }
@@ -56,12 +84,12 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
                 });
 
                 setPlayers([...newPlayers]);
-              } else if (card.action === "give") {
+              } else if (card.action.type === "give") {
                 setGiveSips(prev => [
                   ...prev,
                   {
                     player: playerWithTheSameCard,
-                    sips: prev.sips + card.action.number
+                    sips: card.action.number
                   }
                 ]);
               }
@@ -85,8 +113,27 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     console.log("END: handleClickOnNextCardBtn\n---------------------");
   };
 
-  const handleClickOnPlayer = () => {
+  const handleClickOnPlayer = id => {
     console.log("EXEC: handleClickOnPlayer");
+
+    if (giveSips.length) {
+      const currentPlayer = giveSips[0].player;
+      const sips = giveSips[0].sips;
+
+      console.log("player id: " + id);
+
+      const newPlayers = players.map(player => {
+        if (player.id === id) {
+          player.sips = player.sips + sips;
+        }
+        return player;
+      });
+      setPlayers([...newPlayers]);
+
+      const newGiveSips = giveSips.filter((sip, index) => index !== 0);
+      console.log("newGiveSips: " + newGiveSips);
+      setGiveSips([...newGiveSips]);
+    }
   };
 
   const cardsOnTableNoRows = game.cardsOnTable.map(card => (
@@ -126,7 +173,8 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
   return (
     <GameTable
       canClickOnButton={canClickOnButton}
-      btnText={text}
+      btnText={btnText}
+      giveSipsText={giveSipsText}
       cardsOnTableInRows={cardsOnTableInRows}
       playersHands={playersHands}
       handleClickOnNextCardBtn={handleClickOnNextCardBtn}

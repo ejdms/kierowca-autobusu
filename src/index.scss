@@ -179,10 +179,21 @@ ul {
   justify-content: center;
   align-items: center;
 
-  .next {
+  .button {
     position: absolute;
     top: 30px;
     right: 30px;
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+
+    .info {
+      margin-top: 10px;
+    }
+
+    .btn {
+      float: right;
+    }
   }
 
   .table {

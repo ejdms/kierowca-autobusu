@@ -3,6 +3,7 @@ import Button from "./Button";
 
 const GameTable = ({
   btnText,
+  giveSipsText,
   canClickOnButton,
   cardsOnTableInRows,
   playersHands,
@@ -12,7 +13,7 @@ const GameTable = ({
     <div className="game-board">
       <div className="table">{cardsOnTableInRows}</div>
       <div className="players-hands">{playersHands}</div>
-      <div className="next">
+      <div className="button">
         <Button
           text={btnText}
           additionalClasses="big"
@@ -22,6 +23,7 @@ const GameTable = ({
             }
           }}
         />
+        <div className="info">{giveSipsText}</div>
       </div>
     </div>
   );
