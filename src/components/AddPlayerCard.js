@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import Button from "./Button";
 
-const AddPlayerCard = ({ type = "normal", name, id, handleAddPlayer, handleRemovePlayer }) => {
+const AddPlayerCard = ({
+  type = "normal",
+  name,
+  id,
+  handleAddPlayer,
+  handleRemovePlayer
+}) => {
   const [add, setAdd] = useState({
     name: ""
   });
@@ -14,17 +21,27 @@ const AddPlayerCard = ({ type = "normal", name, id, handleAddPlayer, handleRemov
       {type === "normal" ? (
         <>
           <div className="name">{name}</div>
-          <button className="delete" onClick={() => handleRemovePlayer(id)}>-</button>
+          {/* <button className="delete" onClick={() => handleRemovePlayer(id)}>-</button> */}
+          <Button
+            text="-"
+            additionalClasses="delete"
+            click={() => handleRemovePlayer(id)}
+          />
         </>
       ) : (
         <>
           <input type="text" value={add.name} onChange={e => handleChange(e)} />
-          <button
+          {/* <button
             className="add-new"
             onClick={() => handleAddPlayer(add.name, resetName)}
           >
             +
-          </button>
+          </button> */}
+          <Button
+            text="+"
+            additionalClasses="add-new"
+            click={() => handleAddPlayer(add.name, resetName)}
+          />
         </>
       )}
     </div>

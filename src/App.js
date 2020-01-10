@@ -2,18 +2,28 @@ import React, { useState, useEffect } from "react";
 import MainWrapper from "./components/MainWrapper";
 import GameBoard from "./components/GameBoard";
 import StartScreen from "./components/StartScreen";
+import InitialPhaseScreen from "./components/InitialPhaseScreen";
+
+import createCard from "./functions/createCard";
 
 const App = () => {
   const [game, setGame] = useState({
-    numberOfPlayers: 2,
+    numberOfPlayers: 0,
+    // -----Cards-----
+    // cardsInGame: [],
     cardsOnTable: [],
     activeCard: null,
-    startScreen: true,
-    play: false
+    // -----Visibility-----
+    startScreenVisible: true,
+    gameInitialPhaseScreenVisible: false,
+    gameBoardVisible: false,
+    kierowcaAutubusuScreenVisible: false
+    // -----Others-----
+    // play: false
   });
   const [players, setPlayers] = useState([
-    { id: 1, name: "test1", cards: [] },
-    { id: 2, name: "test2", cards: [] }
+    // { id: 1, name: "test1", cards: [] },
+    // { id: 2, name: "test2", cards: [] }
   ]);
 
   const generateCards = () => {
@@ -60,10 +70,17 @@ const App = () => {
     let cardIndex = 0;
     for (let i = 0; i < figuresPossible.length; i++) {
       for (let j = 0; j < 4; j++) {
-        cardsPossible.push({
+        const card = createCard({
           id: cardIndex + 1,
-          symbol: figuresPossible[i].symbol
+          symbol: figuresPossible[i].symbol,
+          color: j % 2 ? "red" : "black",
+          active: false
         });
+        // cardsPossible.push({
+        //   id: cardIndex + 1,
+        //   symbol: figuresPossible[i].symbol
+        // });
+        cardsPossible.push(card);
         cardIndex++;
       }
     }
@@ -98,22 +115,61 @@ const App = () => {
       setPlayers([...newPlayers]);
     }
 
+    const cardsOnTableWithActions = cardsOnTable.map((card, index) => {
+      let action = null;
+
+      if (index === 0) {
+        action = {
+          type: "drink",
+          number: 1
+        };
+      } else if (index < 3) {
+        action = {
+          type: "give",
+          number: 2
+        };
+      } else if (index < 6) {
+        action = {
+          type: "drink",
+          number: 3
+        };
+      } else if (index < 10) {
+        action = {
+          type: "give",
+          number: 4
+        };
+      } else if (index < 15) {
+        action = {
+          type: "drink",
+          number: 5
+        };
+      } else {
+        action = {
+          type: "kierowca"
+        };
+      }
+
+      card.action = action;
+
+      return card;
+    });
+
     setGame(prev => ({
       ...prev,
-      cardsOnTable: cardsOnTable
+      cardsOnTable: cardsOnTableWithActions
     }));
   };
 
   useEffect(() => {
     // rozpoczęcie nowej gry
-    if (!game.startScreen) {
+    if (!game.startScreenVisible) {
       generateCards();
     }
-  }, [game.startScreen]);
+  }, [game.startScreenVisible]);
 
   return (
     <MainWrapper>
-      {game.startScreen && (
+      {game.startScreenVisible && (
         <StartScreen
           game={game}
           setGame={setGame}
@@ -121,12 +177,22 @@ const App = () => {
           setPlayers={setPlayers}
         />
       )}
-      <GameBoard
-        game={game}
-        setGame={setGame}
-        players={players}
-        setPlayers={setPlayers}
-      />
+      {game.gameInitialPhaseScreenVisible && (
+        <InitialPhaseScreen
+          game={game}
+          setGame={setGame}
+          players={players}
+          setPlayers={setPlayers}
+        />
+      )}
+      {game.gameBoardVisible && (
+        <GameBoard
+          game={game}
+          setGame={setGame}
+          players={players}
+          setPlayers={setPlayers}
+        />
+      )}
     </MainWrapper>
   );
 };

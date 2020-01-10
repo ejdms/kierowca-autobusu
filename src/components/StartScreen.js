@@ -1,16 +1,23 @@
 import React from "react";
 import AddPlayerCard from "./AddPlayerCard";
 import Button from "./Button";
+import createPlayer from "../functions/createPlayer";
 
 const StartScreen = ({ game, setGame, players, setPlayers }) => {
   const { numberOfPlayers } = game;
   const handleAddPlayer = (name, resetName) => {
     if (name) {
-      const newPlayer = {
+      // const newPlayer = {
+      //   name,
+      //   id: numberOfPlayers + 1,
+      //   cards: []
+      // };
+      const newPlayer = createPlayer({
         name,
         id: numberOfPlayers + 1,
         cards: []
-      };
+      });
+      // console.log(newPlayer);
       setPlayers(prev => [...prev, newPlayer]);
       resetName();
       setGame(prev => ({
@@ -27,15 +34,15 @@ const StartScreen = ({ game, setGame, players, setPlayers }) => {
     setGame(prev => ({
       ...prev,
       numberOfPlayers: prev.numberOfPlayers - 1
-    }))
+    }));
   };
   //
   const startGame = () => {
     if (game.numberOfPlayers > 1) {
       setGame(prev => ({
         ...prev,
-        startScreen: false,
-        play: true
+        startScreenVisible: false,
+        gameInitialPhaseScreenVisible: true
       }));
     }
   };
@@ -59,7 +66,7 @@ const StartScreen = ({ game, setGame, players, setPlayers }) => {
           )}
         </div>
         <div className="bottom">
-        <Button click={startGame} text='Start' />
+          <Button click={startGame} text="Start" />
           {/* <button onClick={startGame}>Start</button> */}
         </div>
       </div>
