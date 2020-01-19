@@ -5,7 +5,6 @@ const createPlayer = ({
   initialPhaseOneCompleted = false,
   initialPhaseTwoCompleted = false,
   sips = 0,
-  kierowca = false,
   canClickOnHand = false
 }) => ({
   id,
@@ -14,7 +13,6 @@ const createPlayer = ({
   initialPhaseOneCompleted,
   initialPhaseTwoCompleted,
   sips,
-  kierowca,
   canClickOnHand
 });
 

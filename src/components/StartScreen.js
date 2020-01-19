@@ -7,17 +7,11 @@ const StartScreen = ({ game, setGame, players, setPlayers }) => {
   const { numberOfPlayers } = game;
   const handleAddPlayer = (name, resetName) => {
     if (name) {
-      // const newPlayer = {
-      //   name,
-      //   id: numberOfPlayers + 1,
-      //   cards: []
-      // };
       const newPlayer = createPlayer({
         name,
         id: numberOfPlayers + 1,
         cards: []
       });
-      // console.log(newPlayer);
       setPlayers(prev => [...prev, newPlayer]);
       resetName();
       setGame(prev => ({
@@ -28,7 +22,6 @@ const StartScreen = ({ game, setGame, players, setPlayers }) => {
   };
   //
   const handleRemovePlayer = id => {
-    // console.log(id);
     const newPlayers = players.filter(player => player.id !== id);
     setPlayers([...newPlayers]);
     setGame(prev => ({
@@ -67,7 +60,6 @@ const StartScreen = ({ game, setGame, players, setPlayers }) => {
         </div>
         <div className="bottom">
           <Button click={startGame} text="Start" />
-          {/* <button onClick={startGame}>Start</button> */}
         </div>
       </div>
     </div>

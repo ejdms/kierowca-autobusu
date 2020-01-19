@@ -45,10 +45,10 @@ ul {
     padding: 20px 40px;
     font-size: 2rem;
   }
-}
 
-.clickable {
-  cursor: pointer;
+  &.upper {
+    text-transform: uppercase;
+  }
 }
 
 .start-screen {
@@ -78,9 +78,9 @@ ul {
   .filled {
     width: 100%;
     height: 100vh;
-    max-width: 600px;
+    max-width: calc(100% - 20px);
+    margin-left: 10px;
     max-height: 600px;
-    // background-color: #000;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -89,6 +89,7 @@ ul {
     .upper {
       --padding: 40px;
       display: flex;
+      justify-content: center;
       flex-flow: row nowrap;
       width: 100%;
       max-width: calc(100% - var(--padding) * 2);
@@ -215,7 +216,8 @@ ul {
   }
 
   .players-hands {
-    margin-top: 30px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     // position: absolute;
     // left: 0;
     // bottom: 10px;
@@ -226,6 +228,22 @@ ul {
 
     .player-hand {
       text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+
+      @keyframes clickablePlayer {
+        0% {
+          background: $bgColor;
+        }
+        100% {
+          background: lighten($color: $bgColor, $amount: 20%);
+        }
+      }
+
+      &.clickable {
+        cursor: pointer;
+        animation: clickablePlayer 0.8s infinite alternate both;
+      }
 
       .player-name {
         text-transform: uppercase;
@@ -293,6 +311,76 @@ ul {
       border-radius: 2px;
       transform: translate(-4px, -4px);
       z-index: 1;
+    }
+  }
+}
+
+.kierowca-screen {
+  .end-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+    > h1 {
+      margin-bottom: 10px;
+    }
+
+    .scores {
+      margin-top: 10vh;
+      text-align: center;
+
+      ul {
+        display: flex;
+        margin-top: 15px;
+
+        li {
+          border: 1px solid $txtColor;
+          padding: 20px;
+
+          + li {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .kierowca {
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+
+    .buttons li {
+      border: 1px solid #fff;
+      padding: 20px 40px;
+      text-align: center;
+      cursor: pointer;
+
+      + li {
+        margin-top: 5px;
+      }
+    }
+
+    .cards {
+      display: flex;
+
+      .card + .card {
+        margin-left: 10px;
+      }
+    }
+
+    .info {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
     }
   }
 }

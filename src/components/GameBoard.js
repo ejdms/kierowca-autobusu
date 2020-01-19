@@ -4,10 +4,40 @@ import GameTable from "./GameTable";
 import Card from "./Card";
 
 const GameBoard = ({ game, setGame, players, setPlayers }) => {
-  const [btnText, setBtnText] = useState("Next card");
-  const [canClickOnButton, setCanClickOnButton] = useState(true);
-  const [giveSips, setGiveSips] = useState([]);
-  const [giveSipsText, setGiveSipsText] = useState("");
+  const initialStates = {
+    btnText: "Next card",
+    canClickOnButton: true,
+    giveSips: [],
+    giveSipsText: "",
+    checkForKierowca: false
+  };
+  const [btnText, setBtnText] = useState(initialStates.btnText);
+  const [canClickOnButton, setCanClickOnButton] = useState(
+    initialStates.canClickOnButton
+  );
+  const [giveSips, setGiveSips] = useState(initialStates.giveSips);
+  const [giveSipsText, setGiveSipsText] = useState(initialStates.giveSipsText);
+  const [checkForKierowca, setCheckForKierowca] = useState(
+    initialStates.checkForKierowca
+  );
+
+  //RESET
+  const reset = () => {
+    setBtnText(initialStates.btnText);
+    setCanClickOnButton(initialStates.canClickOnButton);
+    setGiveSips(initialStates.giveSips);
+    setGiveSipsText(initialStates.giveSipsText);
+    setCheckForKierowca(initialStates.checkForKierowca);
+  };
+  useEffect(() => {
+    reset();
+  }, []);
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, []);
+  // /RESET
 
   useEffect(() => {
     if (giveSips.length) {
@@ -40,17 +70,13 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
   }, [giveSips]);
 
   const handleClickOnNextCardBtn = () => {
-    console.log("EXEC: handleClickOnNextCardBtn");
+    // console.log("EXEC: handleClickOnNextCardBtn");
 
     const cardIndex = game.cardsOnTable.findIndex(card => !card.active);
 
     if (cardIndex !== -1) {
       const card = game.cardsOnTable[cardIndex];
       const cardId = card.id;
-
-      console.log(`card.action.type: ${card.action.type}
-      card.action.number: ${card.action.number}
-      cardId: ${cardId}`);
 
       const playersThatHaveTheSameCard = players.filter(player => {
         let sameCard = false;
@@ -65,15 +91,11 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
         }
       });
 
-      console.log("playersThatHaveTheSameCard: " + playersThatHaveTheSameCard);
-
       if (playersThatHaveTheSameCard.length) {
-        console.log("playersThatHaveTheSameCard.length !== 0");
-
         playersThatHaveTheSameCard.forEach(playerWithTheSameCard => {
           const playerCards = [...playerWithTheSameCard.cards];
 
-          playerCards.forEach(playerCard => {
+          playerCards.forEach((playerCard, i) => {
             if (playerCard.symbol === card.symbol) {
               if (card.action.type === "drink") {
                 const newPlayers = players.map(player => {
@@ -85,17 +107,39 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
 
                 setPlayers([...newPlayers]);
               } else if (card.action.type === "give") {
-                setGiveSips(prev => [
+                // THIS SECTION IS COMMENTED FOR EASIER DEVELOPMENT
+                // UNCOMMENT FOR CORRECT GAMEPLAY
+                //
+                // setGiveSips(prev => [
+                //   ...prev,
+                //   {
+                //     player: playerWithTheSameCard,
+                //     sips: card.action.number
+                //   }
+                // ]);
+              } else if (card.action.type === "kierowca") {
+                setGame(prev => ({
                   ...prev,
-                  {
-                    player: playerWithTheSameCard,
-                    sips: card.action.number
-                  }
-                ]);
+                  playersWithKierowca: [
+                    ...prev.playersWithKierowca,
+                    playerWithTheSameCard
+                  ]
+                }));
               }
             }
           });
         });
+      }
+
+      //
+      if (card.action.type === "kierowca") {
+        setTimeout(() => {
+          setGame(prev => ({
+            ...prev,
+            gameBoardVisible: false,
+            kierowcaAutubusuScreenVisible: true
+          }));
+        }, 1000);
       }
 
       const newCardsOnTable = game.cardsOnTable.map(card => {
@@ -109,18 +153,14 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
         cardsOnTable: [...newCardsOnTable]
       }));
     }
-
-    console.log("END: handleClickOnNextCardBtn\n---------------------");
   };
 
   const handleClickOnPlayer = id => {
-    console.log("EXEC: handleClickOnPlayer");
+    // console.log("EXEC: handleClickOnPlayer");
 
     if (giveSips.length) {
       const currentPlayer = giveSips[0].player;
       const sips = giveSips[0].sips;
-
-      console.log("player id: " + id);
 
       const newPlayers = players.map(player => {
         if (player.id === id) {
@@ -131,7 +171,6 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
       setPlayers([...newPlayers]);
 
       const newGiveSips = giveSips.filter((sip, index) => index !== 0);
-      console.log("newGiveSips: " + newGiveSips);
       setGiveSips([...newGiveSips]);
     }
   };

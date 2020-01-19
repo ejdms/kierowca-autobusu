@@ -3,28 +3,41 @@ import MainWrapper from "./components/MainWrapper";
 import GameBoard from "./components/GameBoard";
 import StartScreen from "./components/StartScreen";
 import InitialPhaseScreen from "./components/InitialPhaseScreen";
+import KierowcaAutobusuPhaseScreen from "./components/KierowcaAutobusuPhaseScreen";
 
 import createCard from "./functions/createCard";
 
 const App = () => {
-  const [game, setGame] = useState({
+  const initialGameState = {
     numberOfPlayers: 0,
-    // -----Cards-----
-    // cardsInGame: [],
+    cardsInGame: [],
     cardsOnTable: [],
     activeCard: null,
-    // -----Visibility-----
     startScreenVisible: true,
     gameInitialPhaseScreenVisible: false,
     gameBoardVisible: false,
-    kierowcaAutubusuScreenVisible: false
-    // -----Others-----
-    // play: false
+    kierowcaAutubusuScreenVisible: false,
+    playersWithKierowca: []
+  };
+  const [game, setGame] = useState({
+    ...initialGameState
   });
-  const [players, setPlayers] = useState([
-    // { id: 1, name: "test1", cards: [] },
-    // { id: 2, name: "test2", cards: [] }
-  ]);
+  const [players, setPlayers] = useState([]);
+
+  // useEffect(() => {
+  //   setGame(prev => ({
+  //     ...prev,
+  //     kierowcaAutubusuScreenVisible: false
+  //   }));
+  // }, []);
+
+  const handleGameReset = () => {
+    // console.log("EXEC: handleReset");
+    setGame({
+      ...initialGameState
+    });
+    setPlayers([]);
+  };
 
   const generateCards = () => {
     const figures = [
@@ -56,16 +69,12 @@ const App = () => {
       howManyFigures++;
     }
 
-    // console.log("howManyFigures: " + howManyFigures);
-
     for (let i = 0; i < howManyFigures; i++) {
       figuresPossible = [
         ...figuresPossible,
         ...figures.filter(card => card.id === i + 1)
       ];
-      // console.log(i + ": " + figuresPossible);
     }
-    // console.log(figuresPossible);
 
     let cardIndex = 0;
     for (let i = 0; i < figuresPossible.length; i++) {
@@ -76,17 +85,13 @@ const App = () => {
           color: j % 2 ? "red" : "black",
           active: false
         });
-        // cardsPossible.push({
-        //   id: cardIndex + 1,
-        //   symbol: figuresPossible[i].symbol
-        // });
         cardsPossible.push(card);
         cardIndex++;
       }
     }
-    // console.log(cardsPossible);
 
     const cardsPossibleRandom = [];
+    const cardsInGame = [];
     let maxIndex = cardsPossible.length - 1;
     const repeats = cardsPossible.length;
 
@@ -94,17 +99,19 @@ const App = () => {
       const randomIndex = Math.floor(Math.random() * maxIndex); //random index
       // console.log(i);
       cardsPossibleRandom.push(cardsPossible[randomIndex]); //add random card from cardsPossible
+      cardsInGame.push(cardsPossible[randomIndex]); //add random card from cardsPossible
       //delete used card
       cardsPossible.splice(randomIndex, 1);
       maxIndex--;
     }
 
-    // console.log(cardsPossible);
-    // console.log(cardsPossibleRandom);
+    setGame(prev => ({
+      ...prev,
+      cardsInGame: [...cardsInGame]
+    }));
 
     // generate cards on table
     const cardsOnTable = [...cardsPossibleRandom.splice(0, 16)];
-    // console.log(cardsOnTable, cardsPossibleRandom);
 
     // ganerate cards on hands
     for (let i = 0; i < game.numberOfPlayers; i++) {
@@ -161,7 +168,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    // rozpoczęcie nowej gry
     if (!game.startScreenVisible) {
       generateCards();
     }
@@ -191,6 +197,15 @@ const App = () => {
           setGame={setGame}
           players={players}
           setPlayers={setPlayers}
+        />
+      )}
+      {game.kierowcaAutubusuScreenVisible && (
+        <KierowcaAutobusuPhaseScreen
+          game={game}
+          setGame={setGame}
+          players={players}
+          setPlayers={setPlayers}
+          handleGameReset={handleGameReset}
         />
       )}
     </MainWrapper>

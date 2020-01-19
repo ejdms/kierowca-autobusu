@@ -2,14 +2,30 @@ import React, { useState, useEffect } from "react";
 import Card from "./Card";
 
 const InitialPhaseScreen = ({ game, setGame, players, setPlayers }) => {
-  const [initialGame, setInitialGame] = useState({
+  const initialGameInitialState = {
     completed: false,
     phase: 1,
     currentPlayer: players[0],
     shouldChangeCurrentPlayer: false,
     canClick: true
+  };
+  const [initialGame, setInitialGame] = useState({
+    ...initialGameInitialState
   });
 
+  //RESET
+  const reset = () => {
+    setInitialGame({ ...initialGameInitialState });
+  };
+  useEffect(() => {
+    reset();
+  }, []);
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, []);
+  // /RESET
   const {
     phase,
     currentPlayer,
@@ -18,13 +34,13 @@ const InitialPhaseScreen = ({ game, setGame, players, setPlayers }) => {
   } = initialGame;
 
   useEffect(() => {
-    console.log("EXEC: useEffect(phase)");
+    // console.log("EXEC: useEffect(phase)");
     if (shouldChangeCurrentPlayer) {
       //change current player or end of the initial phase
       const playerId = currentPlayer.id;
       const lastPlayerId = players[players.length - 1].id;
-      console.log(`playerId: ${playerId}
-    lastPlayerId: ${lastPlayerId}`);
+      //   console.log(`playerId: ${playerId}
+      // lastPlayerId: ${lastPlayerId}`);
       if (playerId === lastPlayerId) {
         //current player is last player
         setGame(prev => ({
@@ -49,7 +65,7 @@ const InitialPhaseScreen = ({ game, setGame, players, setPlayers }) => {
   }, [initialGame.phase]);
 
   const handleClick = option => {
-    console.log("EXEC: handleClick");
+    // console.log("EXEC: handleClick");
 
     if (canClick) {
       const playerId = currentPlayer.id;
