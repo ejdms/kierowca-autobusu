@@ -6,7 +6,15 @@ import createPlayer from "../functions/createPlayer";
 const StartScreen = ({ game, setGame, players, setPlayers }) => {
   const { numberOfPlayers } = game;
   const handleAddPlayer = (name, resetName) => {
-    if (name) {
+    let allowToAddPlayer = true;
+    if (players.length) {
+      players.forEach(player => {
+        if (player.name.toLowerCase() === name.toLowerCase()) {
+          allowToAddPlayer = false;
+        }
+      });
+    }
+    if (name && allowToAddPlayer) {
       const newPlayer = createPlayer({
         name,
         id: numberOfPlayers + 1,

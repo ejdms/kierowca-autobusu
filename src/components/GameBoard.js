@@ -8,25 +8,32 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     btnText: "Next card",
     canClickOnButton: true,
     giveSips: [],
-    giveSipsText: "",
-    checkForKierowca: false
+    checkForKierowca: false,
+    giveSipsNumber: 0,
+    giveSipsNumberSelected: 0,
+    sipsInfo: []
   };
   const [btnText, setBtnText] = useState(initialStates.btnText);
   const [canClickOnButton, setCanClickOnButton] = useState(
     initialStates.canClickOnButton
   );
   const [giveSips, setGiveSips] = useState(initialStates.giveSips);
-  const [giveSipsText, setGiveSipsText] = useState(initialStates.giveSipsText);
   const [checkForKierowca, setCheckForKierowca] = useState(
     initialStates.checkForKierowca
   );
+  const [giveSipsNumber, setGiveSipsNumber] = useState(
+    initialStates.giveSipsNumber
+  );
+  const [giveSipsNumberSelected, setGiveSipsNumberSelected] = useState(
+    initialStates.giveSipsNumberSelected
+  );
+  const [sipsInfo, setSipsInfo] = useState(initialStates.sipsInfo);
 
   //RESET
   const reset = () => {
     setBtnText(initialStates.btnText);
     setCanClickOnButton(initialStates.canClickOnButton);
     setGiveSips(initialStates.giveSips);
-    setGiveSipsText(initialStates.giveSipsText);
     setCheckForKierowca(initialStates.checkForKierowca);
   };
   useEffect(() => {
@@ -52,14 +59,10 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
           return player;
         })
       ]);
-      setGiveSipsText(
-        `Player ${currentPlayer.name} give ${sips} ${
-          sips === 1 ? "sip" : "sips"
-        } to other player (click on other player cards)`
-      );
+      setGiveSipsNumber(sips);
+      setGiveSipsNumberSelected(1);
     } else {
       setCanClickOnButton(true);
-      setGiveSipsText("");
       setPlayers([
         ...players.map(player => {
           player.canClickOnHand = false;
@@ -69,7 +72,13 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     }
   }, [giveSips]);
 
+  const handleChangeSipsNumberToGive = e => {
+    const number = e.target.value;
+    setGiveSipsNumberSelected(number);
+  };
+
   const handleClickOnNextCardBtn = () => {
+    setSipsInfo([]);
     const cardIndex = game.cardsOnTable.findIndex(card => !card.active);
 
     if (cardIndex !== -1) {
@@ -99,6 +108,29 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
                 const newPlayers = players.map(player => {
                   if (player.id === playerWithTheSameCard.id) {
                     player.sips = player.sips + card.action.number;
+
+                    const isThisPlayerAlreadyInSipsInfo =
+                      sipsInfo.findIndex(
+                        sipInfo =>
+                          sipInfo.name.toLowerCase() ===
+                          player.name.toLowerCase()
+                      ) !== -1;
+
+                    if (isThisPlayerAlreadyInSipsInfo) {
+                      const newSipsInfo = sipsInfo.map(sipInfo => {
+                        if (sipInfo.name === player.name) {
+                          sipInfo.sips = sipInfo.sips + card.action.number;
+                        }
+                        return sipInfo;
+                      });
+                      setSipsInfo([...newSipsInfo]);
+                    } else {
+                      const newSipsInfoElement = {
+                        name: player.name,
+                        sips: card.action.number
+                      };
+                      setSipsInfo(prev => [...prev, newSipsInfoElement]);
+                    }
                   }
                   return player;
                 });
@@ -115,6 +147,7 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
                     sips: card.action.number
                   }
                 ]);
+                //
               } else if (card.action.type === "kierowca") {
                 setGame(prev => ({
                   ...prev,
@@ -155,8 +188,8 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
 
   const handleClickOnPlayer = id => {
     if (giveSips.length) {
-      const currentPlayer = giveSips[0].player;
-      const sips = giveSips[0].sips;
+      // const currentPlayer = giveSips[0].player;
+      const sips = parseInt(giveSipsNumberSelected);
 
       const newPlayers = players.map(player => {
         if (player.id === id) {
@@ -166,8 +199,21 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
       });
       setPlayers([...newPlayers]);
 
-      const newGiveSips = giveSips.filter((sip, index) => index !== 0);
+      // const newGiveSips = giveSips.filter((sip, index) => index !== 0);
+      const newGiveSips =
+        sips === giveSipsNumber
+          ? giveSips.filter((sip, index) => index !== 0)
+          : giveSips.map((sip, index) => {
+              if (index === 0) {
+                sip.sips = sip.sips - sips;
+              }
+              return sip;
+            });
+
       setGiveSips([...newGiveSips]);
+
+      setGiveSipsNumber(prev => prev - sips);
+      setGiveSipsNumberSelected(1);
     }
   };
 
@@ -209,10 +255,12 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     <GameTable
       canClickOnButton={canClickOnButton}
       btnText={btnText}
-      giveSipsText={giveSipsText}
       cardsOnTableInRows={cardsOnTableInRows}
       playersHands={playersHands}
       handleClickOnNextCardBtn={handleClickOnNextCardBtn}
+      giveSipsNumber={giveSipsNumber}
+      handleChangeSipsNumberToGive={handleChangeSipsNumberToGive}
+      sipsInfo={sipsInfo}
     />
   );
 };
