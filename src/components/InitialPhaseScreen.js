@@ -34,12 +34,10 @@ const InitialPhaseScreen = ({ game, setGame, players, setPlayers }) => {
   } = initialGame;
 
   useEffect(() => {
-    // console.log("EXEC: useEffect(phase)");
     if (shouldChangeCurrentPlayer) {
       //change current player or end of the initial phase
       const playerId = currentPlayer.id;
       const lastPlayerId = players[players.length - 1].id;
-      //   console.log(`playerId: ${playerId}
       // lastPlayerId: ${lastPlayerId}`);
       if (playerId === lastPlayerId) {
         //current player is last player
@@ -65,8 +63,6 @@ const InitialPhaseScreen = ({ game, setGame, players, setPlayers }) => {
   }, [initialGame.phase]);
 
   const handleClick = option => {
-    // console.log("EXEC: handleClick");
-
     if (canClick) {
       const playerId = currentPlayer.id;
 

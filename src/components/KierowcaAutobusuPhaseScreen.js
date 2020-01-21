@@ -12,30 +12,27 @@ const KierowcaAutobusuPhaseScreen = ({
   handleGameReset
 }) => {
   const allPlayers = [...players];
-  // CHANGE INITIAL STATE TO ALL PLAYERS AND CARDS FOR EASIER DEVELOPMENT
-  // UNCOMMENT FOR CORRECT GAMEPLAY
-  //
-  // const initialKierowcaState = {
-  //   cardsInDeck: game.cardsInGame,
-  //   playersWithKierowca: game.playersWithKierowca,
-  //   currentPlayer: game.playersWithKierowca[0],
-  //   phase: 1,
-  //   cardsOnTheTable: [],
-  //   numberOfCardsLeft: game.cardsInGame.length,
-  //   infoText: "",
-  //   gameOver: false
-  // };
-
   const initialKierowcaState = {
-    cardsInDeck: [...game.cardsInGame],
-    playersWithKierowca: [...players],
-    currentPlayer: players[0],
+    cardsInDeck: game.cardsInGame,
+    playersWithKierowca: game.playersWithKierowca,
+    currentPlayer: game.playersWithKierowca[0],
     phase: 1,
     cardsOnTheTable: [],
     numberOfCardsLeft: game.cardsInGame.length,
     infoText: "",
     gameOver: false
   };
+
+  // const initialKierowcaState = {
+  //   cardsInDeck: [...game.cardsInGame],
+  //   playersWithKierowca: [...players],
+  //   currentPlayer: players[0],
+  //   phase: 1,
+  //   cardsOnTheTable: [],
+  //   numberOfCardsLeft: game.cardsInGame.length,
+  //   infoText: "",
+  //   gameOver: false
+  // };
   const [kierowca, setKierowca] = useState({
     ...initialKierowcaState
   });
@@ -57,12 +54,10 @@ const KierowcaAutobusuPhaseScreen = ({
     });
   };
   useEffect(() => {
-    // console.log("EXEC: useEffect([])");
     reset();
   }, []);
   useEffect(() => {
     return () => {
-      // console.log("EXEC: useEffect([return])");
       reset();
     };
   }, []);
@@ -72,7 +67,6 @@ const KierowcaAutobusuPhaseScreen = ({
   const currentPlayerId = currentPlayer ? currentPlayer.id : null;
 
   const correctChoice = () => {
-    // console.log("EXEC: correctCoice");
     setKierowca(prev => ({
       ...prev,
       cardsOnTheTable: [...prev.cardsOnTheTable, card],
@@ -81,9 +75,7 @@ const KierowcaAutobusuPhaseScreen = ({
   };
 
   const incorrectChoice = () => {
-    // console.log("EXEC: incorrectCoice");
     const newPlayers = allPlayers.map(player => {
-      console.log(player.id === currentPlayerId);
       if (player.id === currentPlayerId) {
         player.sips += 1;
       }
@@ -121,7 +113,6 @@ const KierowcaAutobusuPhaseScreen = ({
       const arrayFromString = infoText.split("");
 
       const index = arrayFromString.findIndex(char => {
-        // console.log(char);
         return /^[0-9]$/.test(char);
       });
 
@@ -138,7 +129,6 @@ const KierowcaAutobusuPhaseScreen = ({
   };
 
   const nextPlayer = () => {
-    // console.log("EXEC: nextPlayer");
     setKierowca(prev => ({
       cardsInDeck: [...game.cardsInGame],
       playersWithKierowca: prev.playersWithKierowca.filter(
@@ -150,7 +140,6 @@ const KierowcaAutobusuPhaseScreen = ({
   };
 
   const gameOver = () => {
-    // console.log("EXEC: gameOver");
     setKierowca(prev => ({
       ...prev,
       gameOver: true
@@ -158,16 +147,13 @@ const KierowcaAutobusuPhaseScreen = ({
   };
 
   const handleClick = type => {
-    // console.log("EXEC: handleClick");
     if (type === "black" || type === "red") {
       const color = card.color;
       const correct = type === color;
 
       if (correct) {
-        // console.log("EXEC: correctCoice(correct)");
         correctChoice();
       } else {
-        // console.log("EXEC: correctCoice(incorrect)");
         incorrectChoice();
       }
     } else {
@@ -219,7 +205,6 @@ const KierowcaAutobusuPhaseScreen = ({
   };
 
   useEffect(() => {
-    // console.log("EXEC: useEffect(phase)");
     if (phase === 6) {
       setTimeout(() => {
         if (playersWithKierowca.length > 1) {
@@ -232,14 +217,12 @@ const KierowcaAutobusuPhaseScreen = ({
   }, [phase]);
 
   useEffect(() => {
-    // console.log("EXEC: useEffect(currentPlayer)");
     if (currentPlayer) {
       getText(true);
     }
   }, [currentPlayer]);
 
   useEffect(() => {
-    // console.log("EXEC: useEffect(cardsInDeck)");
     if (!cardsInDeck.length) {
       if (playersWithKierowca.length) {
         nextPlayer();
@@ -250,7 +233,6 @@ const KierowcaAutobusuPhaseScreen = ({
   }, [cardsInDeck]);
 
   useEffect(() => {
-    // console.log("EXEC: useEffect(playersWithKierowca)");
     if (playersWithKierowca.length) {
       setKierowca(prev => ({
         ...prev,
@@ -262,7 +244,6 @@ const KierowcaAutobusuPhaseScreen = ({
   }, [playersWithKierowca]);
 
   useEffect(() => {
-    // console.log("EXEC: useEffect(cardsInDeck)");
     setKierowca(prev => ({
       ...prev,
       numberOfCardsLeft: cardsInDeck.length
@@ -270,7 +251,6 @@ const KierowcaAutobusuPhaseScreen = ({
   }, [cardsInDeck]);
 
   useEffect(() => {
-    // console.log("EXEC: useEffect(playersWithKierowca)");
     const players = allPlayers.map(player => {
       playersWithKierowca.forEach(playerWithKierowca => {
         if (player.id === playerWithKierowca.id) {

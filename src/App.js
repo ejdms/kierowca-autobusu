@@ -32,7 +32,6 @@ const App = () => {
   // }, []);
 
   const handleGameReset = () => {
-    // console.log("EXEC: handleReset");
     setGame({
       ...initialGameState
     });
@@ -60,7 +59,6 @@ const App = () => {
     let figuresPossible = [];
 
     const howManyCards = 16 + game.numberOfPlayers * 2;
-    // console.log("howManyCards: " + howManyCards);
 
     let howManyFigures = 0;
 
@@ -97,7 +95,6 @@ const App = () => {
 
     for (let i = 0; i < repeats; i++) {
       const randomIndex = Math.floor(Math.random() * maxIndex); //random index
-      // console.log(i);
       cardsPossibleRandom.push(cardsPossible[randomIndex]); //add random card from cardsPossible
       cardsInGame.push(cardsPossible[randomIndex]); //add random card from cardsPossible
       //delete used card

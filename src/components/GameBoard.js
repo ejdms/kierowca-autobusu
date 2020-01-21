@@ -70,8 +70,6 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
   }, [giveSips]);
 
   const handleClickOnNextCardBtn = () => {
-    // console.log("EXEC: handleClickOnNextCardBtn");
-
     const cardIndex = game.cardsOnTable.findIndex(card => !card.active);
 
     if (cardIndex !== -1) {
@@ -107,16 +105,16 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
 
                 setPlayers([...newPlayers]);
               } else if (card.action.type === "give") {
-                // THIS SECTION IS COMMENTED FOR EASIER DEVELOPMENT
+                // THIS SECTION CAN BE COMMENTED FOR EASIER DEVELOPMENT
                 // UNCOMMENT FOR CORRECT GAMEPLAY
                 //
-                // setGiveSips(prev => [
-                //   ...prev,
-                //   {
-                //     player: playerWithTheSameCard,
-                //     sips: card.action.number
-                //   }
-                // ]);
+                setGiveSips(prev => [
+                  ...prev,
+                  {
+                    player: playerWithTheSameCard,
+                    sips: card.action.number
+                  }
+                ]);
               } else if (card.action.type === "kierowca") {
                 setGame(prev => ({
                   ...prev,
@@ -156,8 +154,6 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
   };
 
   const handleClickOnPlayer = id => {
-    // console.log("EXEC: handleClickOnPlayer");
-
     if (giveSips.length) {
       const currentPlayer = giveSips[0].player;
       const sips = giveSips[0].sips;
