@@ -6,6 +6,7 @@ import InitialPhaseScreen from "./components/InitialPhaseScreen";
 import KierowcaAutobusuPhaseScreen from "./components/KierowcaAutobusuPhaseScreen";
 
 import createCard from "./functions/createCard";
+import randomizeArrayOrder from "./functions/randomizeArrayOrder";
 
 const App = () => {
   const initialGameState = {
@@ -88,19 +89,22 @@ const App = () => {
       }
     }
 
-    const cardsPossibleRandom = [];
-    const cardsInGame = [];
-    let maxIndex = cardsPossible.length - 1;
-    const repeats = cardsPossible.length;
+    // const cardsPossibleRandom = [];
+    // const cardsInGame = [];
+    // let maxIndex = cardsPossible.length - 1;
+    // const repeats = cardsPossible.length;
 
-    for (let i = 0; i < repeats; i++) {
-      const randomIndex = Math.floor(Math.random() * maxIndex); //random index
-      cardsPossibleRandom.push(cardsPossible[randomIndex]); //add random card from cardsPossible
-      cardsInGame.push(cardsPossible[randomIndex]); //add random card from cardsPossible
-      //delete used card
-      cardsPossible.splice(randomIndex, 1);
-      maxIndex--;
-    }
+    // for (let i = 0; i < repeats; i++) {
+    //   const randomIndex = Math.floor(Math.random() * maxIndex); //random index
+    //   cardsPossibleRandom.push(cardsPossible[randomIndex]); //add random card from cardsPossible
+    //   cardsInGame.push(cardsPossible[randomIndex]); //add random card from cardsPossible
+    //   //delete used card
+    //   cardsPossible.splice(randomIndex, 1);
+    //   maxIndex--;
+    // }
+
+    const cardsPossibleRandom = randomizeArrayOrder(cardsPossible);
+    const cardsInGame = [...cardsPossibleRandom];
 
     setGame(prev => ({
       ...prev,

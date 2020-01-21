@@ -24,3 +24,6 @@ yarn-error.log*
 
 # api keys
 /public/apiKeys.json
+
+# todo file
+/todo.txt

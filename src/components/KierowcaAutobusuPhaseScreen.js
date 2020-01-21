@@ -3,6 +3,7 @@ import Button from "./Button";
 import Card from "./Card";
 
 import getGender from "../functions/getGender";
+import randomizeArrayOrder from "../functions/randomizeArrayOrder";
 
 const KierowcaAutobusuPhaseScreen = ({
   game,
@@ -13,14 +14,15 @@ const KierowcaAutobusuPhaseScreen = ({
 }) => {
   const allPlayers = [...players];
   const initialKierowcaState = {
-    cardsInDeck: game.cardsInGame,
+    cardsInDeck: randomizeArrayOrder(game.cardsInGame),
     playersWithKierowca: game.playersWithKierowca,
     currentPlayer: game.playersWithKierowca[0],
     phase: 1,
     cardsOnTheTable: [],
     numberOfCardsLeft: game.cardsInGame.length,
     infoText: "",
-    gameOver: false
+    gameOver: false,
+    canClick: true
   };
 
   // const initialKierowcaState = {
@@ -43,7 +45,8 @@ const KierowcaAutobusuPhaseScreen = ({
     phase,
     cardsOnTheTable,
     numberOfCardsLeft,
-    infoText
+    infoText,
+    canClick
   } = kierowca;
   //
 
@@ -82,12 +85,20 @@ const KierowcaAutobusuPhaseScreen = ({
       return player;
     });
     setPlayers([...newPlayers]);
-
     setKierowca(prev => ({
       ...prev,
-      cardsOnTheTable: [],
-      phase: 1
+      cardsOnTheTable: [...prev.cardsOnTheTable, card],
+      canClick: false
     }));
+
+    setTimeout(() => {
+      setKierowca(prev => ({
+        ...prev,
+        cardsOnTheTable: [],
+        phase: 1,
+        canClick: true
+      }));
+    }, 1000);
 
     getText(false);
   };
@@ -130,7 +141,7 @@ const KierowcaAutobusuPhaseScreen = ({
 
   const nextPlayer = () => {
     setKierowca(prev => ({
-      cardsInDeck: [...game.cardsInGame],
+      cardsInDeck: randomizeArrayOrder(game.cardsInGame),
       playersWithKierowca: prev.playersWithKierowca.filter(
         (player, i) => i !== 0
       ),
@@ -147,61 +158,63 @@ const KierowcaAutobusuPhaseScreen = ({
   };
 
   const handleClick = type => {
-    if (type === "black" || type === "red") {
-      const color = card.color;
-      const correct = type === color;
+    if (canClick) {
+      if (type === "black" || type === "red") {
+        const color = card.color;
+        const correct = type === color;
 
-      if (correct) {
-        correctChoice();
+        if (correct) {
+          correctChoice();
+        } else {
+          incorrectChoice();
+        }
       } else {
-        incorrectChoice();
-      }
-    } else {
-      const figures = [
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "J",
-        "Q",
-        "K",
-        "A"
-      ];
-      const previousCard = cardsOnTheTable[cardsOnTheTable.length - 1];
+        const figures = [
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "J",
+          "Q",
+          "K",
+          "A"
+        ];
+        const previousCard = cardsOnTheTable[cardsOnTheTable.length - 1];
 
-      const indexOfPreviousCardSymbol = figures.findIndex(
-        figure => figure === previousCard.symbol
-      );
-      const indexOfClickedCardSymbol = figures.findIndex(
-        figure => figure === card.symbol
-      );
-      const reduce = indexOfClickedCardSymbol - indexOfPreviousCardSymbol;
+        const indexOfPreviousCardSymbol = figures.findIndex(
+          figure => figure === previousCard.symbol
+        );
+        const indexOfClickedCardSymbol = figures.findIndex(
+          figure => figure === card.symbol
+        );
+        const reduce = indexOfClickedCardSymbol - indexOfPreviousCardSymbol;
 
-      let correct = false;
-      if (
-        (type === "more" && reduce > 0) ||
-        (type === "same" && reduce === 0) ||
-        (type === "less" && reduce < 0)
-      ) {
-        correct = true;
+        let correct = false;
+        if (
+          (type === "more" && reduce > 0) ||
+          (type === "same" && reduce === 0) ||
+          (type === "less" && reduce < 0)
+        ) {
+          correct = true;
+        }
+
+        if (correct) {
+          correctChoice();
+        } else {
+          incorrectChoice();
+        }
       }
 
-      if (correct) {
-        correctChoice();
-      } else {
-        incorrectChoice();
-      }
+      setKierowca(prev => ({
+        ...prev,
+        cardsInDeck: prev.cardsInDeck.filter((card, i) => i !== 0)
+      }));
     }
-
-    setKierowca(prev => ({
-      ...prev,
-      cardsInDeck: prev.cardsInDeck.filter((card, i) => i !== 0)
-    }));
   };
 
   useEffect(() => {
