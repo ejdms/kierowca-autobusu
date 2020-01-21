@@ -15,6 +15,13 @@ const AddPlayerCard = ({
     const name = e.target.value;
     setAdd({ name });
   };
+  const handleKeyDown = e => {
+    if (e.which === 13) {
+      e.preventDefault();
+      handleAddPlayer(add.name, resetName);
+    }
+  };
+
   const resetName = () => setAdd({ name: "" });
   return (
     <div className={`add-player-card ${type}`}>
@@ -30,7 +37,12 @@ const AddPlayerCard = ({
         </>
       ) : (
         <>
-          <input type="text" value={add.name} onChange={e => handleChange(e)} />
+          <input
+            type="text"
+            value={add.name}
+            onChange={e => handleChange(e)}
+            onKeyDown={e => handleKeyDown(e)}
+          />
           {/* <button
             className="add-new"
             onClick={() => handleAddPlayer(add.name, resetName)}
