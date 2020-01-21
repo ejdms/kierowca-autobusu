@@ -104,6 +104,43 @@ const App = () => {
     // }
 
     const cardsPossibleRandom = randomizeArrayOrder(cardsPossible);
+
+    const kierowcaCard = cardsPossibleRandom[15];
+    let playerWithKierowcaExisting = false;
+
+    players.forEach(player => {
+      player.cards.forEach(card => {
+        if (card === kierowcaCard) {
+          playerWithKierowcaExisting = true;
+        }
+      });
+    });
+
+    if (!playerWithKierowcaExisting) {
+      console.log("exec change cards fn");
+      const playersCards = [];
+
+      players.forEach(player => {
+        player.cards.forEach(card => {
+          playersCards.push(card);
+        });
+      });
+
+      const randomIndex = Math.floor(Math.random() * (playersCards.length - 1));
+      const randomCardThatIsKierowca = cardsPossibleRandom[randomIndex];
+      const indexOfKierowcaCardInCardsPossible = cardsPossibleRandom.findIndex(
+        cardPossible => cardPossible === randomCardThatIsKierowca
+      );
+
+      if (indexOfKierowcaCardInCardsPossible !== -1) {
+        const card = cardsPossibleRandom.splice(
+          indexOfKierowcaCardInCardsPossible,
+          1
+        );
+        cardsPossibleRandom.push(card);
+      }
+    }
+
     const cardsInGame = [...cardsPossibleRandom];
 
     setGame(prev => ({
