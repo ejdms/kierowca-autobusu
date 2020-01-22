@@ -336,7 +336,7 @@ const KierowcaAutobusuPhaseScreen = ({
         />
         <div className="scores">
           <h1>Total scores</h1>
-          {scores}
+          <ul>{scores}</ul>
         </div>
       </div>
     );

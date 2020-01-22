@@ -25,6 +25,18 @@ const GameTable = ({
       {sipInfo.sips === 1 ? "sip" : "sips"}
     </li>
   ));
+  const giveSipsInfo = (
+    <>
+      <h3>Choose number of sips to give other player</h3>
+      <select
+        className="select"
+        defaultValue={1}
+        onChange={e => handleChangeSipsNumberToGive(e)}
+      >
+        {sipsOptions}
+      </select>
+    </>
+  );
   return (
     <div className="game-board">
       <div className="table">{cardsOnTableInRows}</div>
@@ -41,17 +53,7 @@ const GameTable = ({
         />
 
         <div className="info">
-          {giveSipsNumber !== 0 && (
-            <>
-              <h3>Choose number of sips to give other player</h3>
-              <select
-                defaultValue={1}
-                onChange={e => handleChangeSipsNumberToGive(e)}
-              >
-                {sipsOptions}
-              </select>
-            </>
-          )}
+          {giveSipsNumber !== 0 && giveSipsInfo}
           {sipsInfo.length && sipsInfoText}
         </div>
       </div>

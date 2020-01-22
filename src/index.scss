@@ -1,6 +1,13 @@
 $bgColor: #333;
 $txtColor: #fff;
 
+$mobile: 850px;
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -30,6 +37,7 @@ ul {
 }
 
 .main-wrapper {
+  width: 100%;
   min-height: 100vh;
   background-color: $bgColor;
 }
@@ -51,17 +59,32 @@ ul {
   }
 }
 
-.start-screen {
-  position: fixed;
-  left: 0;
-  top: 0;
+.select {
   width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px 10px;
+  background: $bgColor;
+  color: $txtColor;
+  border: 1px solid $txtColor;
+  margin: 10px 0;
+
+  option {
+    background: $bgColor;
+    color: $txtColor;
+  }
+}
+
+.start-screen {
+  width: 100%;
+  min-height: 100vh;
+  background-color: $bgColor;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
+
+  @include mobile {
+    padding: 20px 0;
+  }
 
   &:before {
     position: absolute;
@@ -77,9 +100,8 @@ ul {
 
   .filled {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     max-width: calc(100% - 20px);
-    margin-left: 10px;
     max-height: 600px;
     display: flex;
     flex-flow: column nowrap;
@@ -96,6 +118,11 @@ ul {
       overflow-x: auto;
       margin-bottom: 30px;
 
+      @include mobile {
+        max-width: 100%;
+        flex-flow: row wrap;
+      }
+
       .add-player-card {
         border: 1px solid #fff;
         flex-shrink: 0;
@@ -107,8 +134,16 @@ ul {
         align-items: center;
         flex-flow: column nowrap;
 
+        @include mobile {
+          margin: 10px;
+        }
+
         + .add-player-card {
           margin-left: 20px;
+
+          @include mobile {
+            margin-left: 10px;
+          }
         }
 
         button.btn {
@@ -137,19 +172,34 @@ ul {
 .initial-phase {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  .options li {
-    border: 1px solid #fff;
-    padding: 20px 40px;
-    text-align: center;
-    cursor: pointer;
+  @include mobile {
+    flex-flow: column;
+  }
 
-    + li {
-      margin-top: 5px;
+  .options ul {
+    @include mobile {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+
+    li {
+      border: 1px solid #fff;
+      padding: 20px 40px;
+      text-align: center;
+      cursor: pointer;
+
+      @include mobile {
+        margin: 5px;
+      }
+
+      + li {
+        margin-top: 5px;
+      }
     }
   }
 
@@ -161,14 +211,23 @@ ul {
     position: absolute;
     bottom: 10px;
     left: 10px;
+
+    @include mobile {
+      position: static;
+    }
   }
 
   .current-player-name {
     position: absolute;
-    left: 50%;
+    left: 0;
     top: 30px;
-    transform: translateX(-50%);
+    text-align: center;
     font-size: 2rem;
+    width: 100%;
+
+    @include mobile {
+      position: static;
+    }
   }
 }
 
@@ -180,6 +239,10 @@ ul {
   justify-content: center;
   align-items: center;
 
+  @include mobile {
+    padding: 20px 0;
+  }
+
   .button {
     position: absolute;
     top: 30px;
@@ -188,12 +251,32 @@ ul {
     flex-direction: column;
     max-width: 300px;
 
+    @include mobile {
+      order: 2;
+      position: static;
+      margin: 20px 0;
+      width: 90%;
+    }
+
     .info {
       margin-top: 10px;
+
+      @include mobile {
+        border: 1px solid $txtColor;
+        text-align: center;
+        padding: 15px;
+        margin: 30px 0 10px;
+      }
     }
 
     .btn {
       float: right;
+
+      @include mobile {
+        width: 100%;
+        padding: 10px 20px;
+        font-size: 1rem;
+      }
     }
   }
 
@@ -203,33 +286,39 @@ ul {
     justify-content: center;
     align-items: center;
 
+    @include mobile {
+      order: 2;
+    }
+
     .row {
       display: flex;
       margin: 5px 0;
-
-      // .card.on-table {
-      //   + .card.on-table {
-      //     margin-left: 10px;
-      //   }
-      // }
     }
   }
 
   .players-hands {
     margin-top: 20px;
     margin-bottom: 10px;
-    // position: absolute;
-    // left: 0;
-    // bottom: 10px;
     width: 100%;
     display: flex;
     align-self: flex-end;
     justify-content: center;
 
+    @include mobile {
+      order: 3;
+      margin-top: 0;
+      margin-bottom: 0;
+      flex-flow: row wrap;
+    }
+
     .player-hand {
       text-align: center;
       padding: 10px;
       border-radius: 10px;
+
+      @include mobile {
+        margin: 10px;
+      }
 
       @keyframes clickablePlayer {
         0% {
@@ -269,8 +358,6 @@ ul {
   }
 }
 
-// .card-on-hand,
-// .card-on-table,
 .card {
   width: 60px;
   height: 90px;
@@ -281,6 +368,12 @@ ul {
   align-items: center;
   font-size: 24px;
   background-color: #fff;
+
+  @include mobile {
+    width: 40px;
+    height: 60px;
+    border-width: 2px;
+  }
 
   &.black {
     color: #000;
@@ -354,19 +447,44 @@ ul {
     align-items: center;
     position: relative;
 
-    .buttons li {
-      border: 1px solid #fff;
-      padding: 20px 40px;
-      text-align: center;
-      cursor: pointer;
+    @include mobile {
+      display: flex;
+      flex-flow: column;
+    }
 
-      + li {
-        margin-top: 5px;
+    .buttons ul {
+      @include mobile {
+        display: flex;
+        flex-direction: row-reverse;
+      }
+
+      li {
+        border: 1px solid #fff;
+        padding: 20px 40px;
+        text-align: center;
+        cursor: pointer;
+
+        @include mobile {
+          margin: 0 5px;
+        }
+
+        + li {
+          margin-top: 5px;
+
+          @include mobile {
+            margin-top: 0;
+          }
+        }
       }
     }
 
     .cards {
       display: flex;
+
+      @include mobile {
+        order: -1;
+        min-height: 60px;
+      }
 
       .card + .card {
         margin-left: 10px;
@@ -381,6 +499,13 @@ ul {
       justify-content: space-around;
       align-items: center;
       width: 100%;
+
+      @include mobile {
+        display: flex;
+        flex-flow: column;
+        position: static;
+        align-self: flex-end;
+      }
     }
   }
 }
