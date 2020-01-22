@@ -425,6 +425,11 @@ ul {
       border-radius: 2px;
       transform: translate(-4px, -4px);
       z-index: 1;
+
+      @include mobile {
+        border-width: 2px;
+        transform: translate(-2px, -2px);
+      }
     }
   }
 }
