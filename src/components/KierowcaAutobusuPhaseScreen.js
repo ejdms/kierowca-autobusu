@@ -111,8 +111,6 @@ const KierowcaAutobusuPhaseScreen = ({
       const genderInfo = await getGender(currentPlayer.name);
       const { gender, accuracy } = genderInfo;
 
-      text = `Now playing ${currentPlayer.name}. `;
-
       if (accuracy < 66) {
         text += `Number of sips: ${currentPlayer.sips}`;
       } else {
@@ -315,6 +313,7 @@ const KierowcaAutobusuPhaseScreen = ({
 
     content = (
       <div className="kierowca">
+        <div className="info-top">{`Current player: ${currentPlayer.name}`}</div>
         <div className="buttons">{buttons}</div>
         <div className="cards">{cards}</div>
         <div className="info">
