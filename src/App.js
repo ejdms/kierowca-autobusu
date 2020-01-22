@@ -82,7 +82,11 @@ const App = () => {
       }
     }
 
-    const cardsPossibleRandom = randomizeArrayOrder(cardsPossible);
+    let cardsPossibleRandom = randomizeArrayOrder(cardsPossible);
+
+    cardsPossibleRandom.forEach((card, i) =>
+      console.log(i + ": " + card.symbol)
+    );
 
     const kierowcaCard = cardsPossibleRandom[15];
     let playerWithKierowcaExisting = false;
@@ -96,6 +100,7 @@ const App = () => {
     });
 
     if (!playerWithKierowcaExisting) {
+      console.log("player with kierowca not existing");
       const playersCards = [];
 
       players.forEach(player => {
@@ -118,6 +123,10 @@ const App = () => {
         cardsPossibleRandom.push(card);
       }
     }
+
+    cardsPossibleRandom.forEach((card, i) =>
+      console.log(i + ": " + card.symbol)
+    );
 
     const cardsInGame = [...cardsPossibleRandom];
 
