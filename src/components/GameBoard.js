@@ -156,14 +156,13 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
                 // THIS SECTION CAN BE COMMENTED FOR EASIER DEVELOPMENT
                 // UNCOMMENT FOR CORRECT GAMEPLAY
                 //
-                // setGiveSips(prev => [
-                //   ...prev,
-                //   {
-                //     player: playerWithTheSameCard,
-                //     sips: card.action.number
-                //   }
-                // ]);
-                //
+                setGiveSips(prev => [
+                  ...prev,
+                  {
+                    player: playerWithTheSameCard,
+                    sips: card.action.number
+                  }
+                ]);
               } else if (card.action.type === "kierowca") {
                 setGame(prev => ({
                   ...prev,

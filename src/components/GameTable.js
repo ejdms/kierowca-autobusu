@@ -39,17 +39,6 @@ const GameTable = ({
             }
           }}
         />
-        {/* {giveSipsNumber !== 0 && (
-          <div className="info">
-            <h3>Choose number of sips to give other player</h3>
-            <select
-              defaultValue={1}
-              onChange={e => handleChangeSipsNumberToGive(e)}
-            >
-              {sipsOptions}
-            </select>
-          </div>
-        )} */}
 
         <div className="info">
           {giveSipsNumber !== 0 && (

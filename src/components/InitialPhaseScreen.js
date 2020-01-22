@@ -38,7 +38,7 @@ const InitialPhaseScreen = ({ game, setGame, players, setPlayers }) => {
       //change current player or end of the initial phase
       const playerId = currentPlayer.id;
       const lastPlayerId = players[players.length - 1].id;
-      // lastPlayerId: ${lastPlayerId}`);
+
       if (playerId === lastPlayerId) {
         //current player is last player
         setGame(prev => ({

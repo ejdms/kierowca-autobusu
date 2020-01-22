@@ -28,7 +28,6 @@ const AddPlayerCard = ({
       {type === "normal" ? (
         <>
           <div className="name">{name}</div>
-          {/* <button className="delete" onClick={() => handleRemovePlayer(id)}>-</button> */}
           <Button
             text="-"
             additionalClasses="delete"
@@ -43,12 +42,6 @@ const AddPlayerCard = ({
             onChange={e => handleChange(e)}
             onKeyDown={e => handleKeyDown(e)}
           />
-          {/* <button
-            className="add-new"
-            onClick={() => handleAddPlayer(add.name, resetName)}
-          >
-            +
-          </button> */}
           <Button
             text="+"
             additionalClasses="add-new"
