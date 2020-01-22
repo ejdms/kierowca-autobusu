@@ -141,6 +141,7 @@ const KierowcaAutobusuPhaseScreen = ({
 
   const nextPlayer = () => {
     setKierowca(prev => ({
+      ...prev,
       cardsInDeck: randomizeArrayOrder(game.cardsInGame),
       playersWithKierowca: prev.playersWithKierowca.filter(
         (player, i) => i !== 0
@@ -153,8 +154,15 @@ const KierowcaAutobusuPhaseScreen = ({
   const gameOver = () => {
     setKierowca(prev => ({
       ...prev,
-      gameOver: true
+      cardsInDeck: 0,
+      numberOfCardsLeft: 0
     }));
+    setTimeout(() => {
+      setKierowca(prev => ({
+        ...prev,
+        gameOver: true
+      }));
+    }, 1000);
   };
 
   const handleClick = type => {
