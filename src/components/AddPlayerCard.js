@@ -41,6 +41,7 @@ const AddPlayerCard = ({
             value={add.name}
             onChange={e => handleChange(e)}
             onKeyDown={e => handleKeyDown(e)}
+            placeholder="Name"
           />
           <Button
             text="+"

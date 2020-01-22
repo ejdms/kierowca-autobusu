@@ -8,6 +8,13 @@ $mobile: 850px;
   }
 }
 
+$mobileXS: 450px;
+@mixin mobileXS {
+  @media (max-width: #{$mobileXS}) {
+    @content;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -146,6 +153,14 @@ ul {
           }
         }
 
+        input {
+          color: $txtColor;
+          border: 1px solid;
+          background: transparent;
+          padding: 2px 5px;
+          text-align: center;
+        }
+
         button.btn {
           margin-top: 10px;
         }
@@ -179,6 +194,7 @@ ul {
 
   @include mobile {
     flex-flow: column;
+    padding: 0 10px;
   }
 
   .options ul {
@@ -195,6 +211,11 @@ ul {
 
       @include mobile {
         margin: 5px;
+      }
+
+      @include mobileXS {
+        padding: 10px 20px;
+        font-size: 0.8rem;
       }
 
       + li {
@@ -428,12 +449,21 @@ ul {
         display: flex;
         margin-top: 15px;
 
+        @include mobileXS {
+          flex-direction: column;
+        }
+
         li {
           border: 1px solid $txtColor;
           padding: 20px;
 
           + li {
             margin-left: 10px;
+
+            @include mobileXS {
+              margin-left: 0;
+              margin-top: 5px;
+            }
           }
         }
       }
@@ -468,6 +498,11 @@ ul {
           margin: 0 5px;
         }
 
+        @include mobileXS {
+          padding: 10px 20px;
+          font-size: 0.8rem;
+        }
+
         + li {
           margin-top: 5px;
 
@@ -499,12 +534,21 @@ ul {
       justify-content: space-around;
       align-items: center;
       width: 100%;
+      padding: 0 10px;
 
       @include mobile {
         display: flex;
         flex-flow: column;
         position: static;
-        align-self: flex-end;
+        text-align: center;
+
+        .info-1 {
+          margin-bottom: 3px;
+        }
+      }
+
+      @include mobileXS {
+        font-size: 0.8rem;
       }
     }
   }
