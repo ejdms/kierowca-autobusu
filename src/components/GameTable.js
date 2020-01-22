@@ -54,7 +54,7 @@ const GameTable = ({
 
         <div className="info">
           {giveSipsNumber !== 0 && giveSipsInfo}
-          {sipsInfo.length && sipsInfoText}
+          {sipsInfo.length !== 0 && sipsInfoText}
         </div>
       </div>
     </div>
