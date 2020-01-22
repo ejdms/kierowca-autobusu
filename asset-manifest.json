@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/kierowca-autobusu/static/css/main.a1342bfa.chunk.css",
+    "main.js": "/kierowca-autobusu/static/js/main.fba9f7d8.chunk.js",
+    "main.js.map": "/kierowca-autobusu/static/js/main.fba9f7d8.chunk.js.map",
+    "runtime-main.js": "/kierowca-autobusu/static/js/runtime-main.452d2f0e.js",
+    "runtime-main.js.map": "/kierowca-autobusu/static/js/runtime-main.452d2f0e.js.map",
+    "static/js/2.d3d1f8ce.chunk.js": "/kierowca-autobusu/static/js/2.d3d1f8ce.chunk.js",
+    "static/js/2.d3d1f8ce.chunk.js.map": "/kierowca-autobusu/static/js/2.d3d1f8ce.chunk.js.map",
+    "index.html": "/kierowca-autobusu/index.html",
+    "precache-manifest.e3c21db727cbb362e7c5a3107e35d6f9.js": "/kierowca-autobusu/precache-manifest.e3c21db727cbb362e7c5a3107e35d6f9.js",
+    "service-worker.js": "/kierowca-autobusu/service-worker.js",
+    "static/css/main.a1342bfa.chunk.css.map": "/kierowca-autobusu/static/css/main.a1342bfa.chunk.css.map",
+    "static/js/2.d3d1f8ce.chunk.js.LICENSE": "/kierowca-autobusu/static/js/2.d3d1f8ce.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.452d2f0e.js",
+    "static/js/2.d3d1f8ce.chunk.js",
+    "static/css/main.a1342bfa.chunk.css",
+    "static/js/main.fba9f7d8.chunk.js"
+  ]
+}
