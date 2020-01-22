@@ -32,7 +32,7 @@ const App = () => {
     setPlayers([]);
   };
 
-  const generateCards = () => {
+  const generateCards = recursiveFunction => {
     const figures = [
       { id: 1, symbol: "A" },
       { id: 2, symbol: "K" },
@@ -84,51 +84,52 @@ const App = () => {
 
     let cardsPossibleRandom = randomizeArrayOrder(cardsPossible);
 
-    cardsPossibleRandom.forEach((card, i) =>
-      console.log(i + ": " + card.symbol)
-    );
+    let tableCards = [...cardsPossibleRandom.splice(0, 16)];
+    const playersCards = [...cardsPossibleRandom];
 
-    const kierowcaCard = cardsPossibleRandom[15];
+    const kierowcaCard = tableCards[tableCards.length - 1];
+
     let playerWithKierowcaExisting = false;
 
-    players.forEach(player => {
-      player.cards.forEach(card => {
-        if (card === kierowcaCard) {
-          playerWithKierowcaExisting = true;
-        }
-      });
+    playersCards.forEach(card => {
+      if (card.symbol === kierowcaCard.symbol) {
+        playerWithKierowcaExisting = true;
+      }
     });
 
     if (!playerWithKierowcaExisting) {
-      console.log("player with kierowca not existing");
-      const playersCards = [];
+      const cardsThatWillBeOnTable = [...tableCards];
 
-      players.forEach(player => {
-        player.cards.forEach(card => {
-          playersCards.push(card);
+      let changingIsPossible = false;
+      let symbolToChange = null;
+
+      playersCards.forEach(playerCard => {
+        cardsThatWillBeOnTable.forEach(tableCard => {
+          if (playerCard.symbol === tableCard.symbol) {
+            changingIsPossible = true;
+            symbolToChange = playerCard.symbol;
+          }
         });
       });
 
-      const randomIndex = Math.floor(Math.random() * (playersCards.length - 1));
-      const randomCardThatIsKierowca = cardsPossibleRandom[randomIndex];
-      const indexOfKierowcaCardInCardsPossible = cardsPossibleRandom.findIndex(
-        cardPossible => cardPossible === randomCardThatIsKierowca
-      );
-
-      if (indexOfKierowcaCardInCardsPossible !== -1) {
-        const card = cardsPossibleRandom.splice(
-          indexOfKierowcaCardInCardsPossible,
-          1
+      if (changingIsPossible) {
+        const indexOfCardToTake = cardsThatWillBeOnTable.findIndex(
+          card => card.symbol === symbolToChange
         );
-        cardsPossibleRandom.push(card);
+
+        if (indexOfCardToTake !== -1) {
+          const card = cardsThatWillBeOnTable.splice(indexOfCardToTake, 1);
+          cardsThatWillBeOnTable.push(card);
+
+          const newTableCards = [...cardsThatWillBeOnTable, ...playersCards];
+          tableCards = [...newTableCards];
+        }
+      } else {
+        return recursiveFunction();
       }
     }
 
-    cardsPossibleRandom.forEach((card, i) =>
-      console.log(i + ": " + card.symbol)
-    );
-
-    const cardsInGame = [...cardsPossibleRandom];
+    const cardsInGame = [...tableCards, ...playersCards];
 
     setGame(prev => ({
       ...prev,
@@ -136,11 +137,11 @@ const App = () => {
     }));
 
     // generate cards on table
-    const cardsOnTable = [...cardsPossibleRandom.splice(0, 16)];
+    const cardsOnTable = [...tableCards];
 
     // ganerate cards on hands
     for (let i = 0; i < game.numberOfPlayers; i++) {
-      const cardsOnHand = cardsPossibleRandom.splice(0, 2);
+      const cardsOnHand = playersCards.splice(0, 2);
       const newPlayers = [...players];
       newPlayers[i].cards = cardsOnHand;
 
@@ -195,7 +196,7 @@ const App = () => {
 
   useEffect(() => {
     if (!game.startScreenVisible) {
-      generateCards();
+      generateCards(generateCards);
     }
   }, [game.startScreenVisible]);
 
