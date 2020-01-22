@@ -10,7 +10,8 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     giveSips: [],
     giveSipsNumber: 0,
     giveSipsNumberSelected: 0,
-    sipsInfo: []
+    sipsInfo: [],
+    forceEnd: false
   };
   const [btnText, setBtnText] = useState(initialStates.btnText);
   const [canClickOnButton, setCanClickOnButton] = useState(
@@ -25,6 +26,7 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     initialStates.giveSipsNumberSelected
   );
   const [sipsInfo, setSipsInfo] = useState(initialStates.sipsInfo);
+  const [forceEnd, setForceEnd] = useState(initialStates.forceEnd);
 
   //RESET
   const reset = () => {
@@ -79,13 +81,17 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
       const thereIsInactiveCardOnTable =
         game.cardsOnTable.findIndex(card => !card.active) !== -1;
 
-      console.log(thereIsInactiveCardOnTable);
-
       if (!thereIsInactiveCardOnTable) {
         changeScreenToKierowca();
       }
     }
   }, [giveSips]);
+
+  useEffect(() => {
+    if (forceEnd) {
+      changeScreenToKierowca();
+    }
+  }, [forceEnd]);
 
   const handleChangeSipsNumberToGive = e => {
     const number = e.target.value;
@@ -214,6 +220,10 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
             }
           });
         });
+      } else {
+        if (card.action.type === "kierowca") {
+          setForceEnd(true);
+        }
       }
 
       //
@@ -233,7 +243,6 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
 
   const handleClickOnPlayer = id => {
     if (giveSips.length) {
-      // const currentPlayer = giveSips[0].player;
       const sips = parseInt(giveSipsNumberSelected);
 
       const newPlayers = players.map(player => {
@@ -244,7 +253,6 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
       });
       setPlayers([...newPlayers]);
 
-      // const newGiveSips = giveSips.filter((sip, index) => index !== 0);
       const newGiveSips =
         sips === giveSipsNumber
           ? giveSips.filter((sip, index) => index !== 0)
