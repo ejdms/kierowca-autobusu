@@ -117,7 +117,6 @@ const App = () => {
     });
 
     if (!playerWithKierowcaExisting) {
-      console.log("exec change cards fn");
       const playersCards = [];
 
       players.forEach(player => {
@@ -190,7 +189,8 @@ const App = () => {
         };
       } else {
         action = {
-          type: "kierowca"
+          type: "kierowca",
+          number: 6
         };
       }
 

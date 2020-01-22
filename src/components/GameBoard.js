@@ -8,7 +8,6 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     btnText: "Next card",
     canClickOnButton: true,
     giveSips: [],
-    checkForKierowca: false,
     giveSipsNumber: 0,
     giveSipsNumberSelected: 0,
     sipsInfo: []
@@ -18,9 +17,7 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     initialStates.canClickOnButton
   );
   const [giveSips, setGiveSips] = useState(initialStates.giveSips);
-  const [checkForKierowca, setCheckForKierowca] = useState(
-    initialStates.checkForKierowca
-  );
+
   const [giveSipsNumber, setGiveSipsNumber] = useState(
     initialStates.giveSipsNumber
   );
@@ -34,7 +31,6 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     setBtnText(initialStates.btnText);
     setCanClickOnButton(initialStates.canClickOnButton);
     setGiveSips(initialStates.giveSips);
-    setCheckForKierowca(initialStates.checkForKierowca);
   };
   useEffect(() => {
     reset();
@@ -45,6 +41,16 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     };
   }, []);
   // /RESET
+
+  const changeScreenToKierowca = () => {
+    setTimeout(() => {
+      setGame(prev => ({
+        ...prev,
+        gameBoardVisible: false,
+        kierowcaAutubusuScreenVisible: true
+      }));
+    }, 1000);
+  };
 
   useEffect(() => {
     if (giveSips.length) {
@@ -69,6 +75,15 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
           return player;
         })
       ]);
+
+      const thereIsInactiveCardOnTable =
+        game.cardsOnTable.findIndex(card => !card.active) !== -1;
+
+      console.log(thereIsInactiveCardOnTable);
+
+      if (!thereIsInactiveCardOnTable) {
+        changeScreenToKierowca();
+      }
     }
   }, [giveSips]);
 
@@ -105,6 +120,7 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
           playerCards.forEach((playerCard, i) => {
             if (playerCard.symbol === card.symbol) {
               if (card.action.type === "drink") {
+                //TODO: CHANGE THIS TO FN TO NOT REPEAT CODE
                 const newPlayers = players.map(player => {
                   if (player.id === playerWithTheSameCard.id) {
                     player.sips = player.sips + card.action.number;
@@ -140,13 +156,13 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
                 // THIS SECTION CAN BE COMMENTED FOR EASIER DEVELOPMENT
                 // UNCOMMENT FOR CORRECT GAMEPLAY
                 //
-                setGiveSips(prev => [
-                  ...prev,
-                  {
-                    player: playerWithTheSameCard,
-                    sips: card.action.number
-                  }
-                ]);
+                // setGiveSips(prev => [
+                //   ...prev,
+                //   {
+                //     player: playerWithTheSameCard,
+                //     sips: card.action.number
+                //   }
+                // ]);
                 //
               } else if (card.action.type === "kierowca") {
                 setGame(prev => ({
@@ -156,6 +172,45 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
                     playerWithTheSameCard
                   ]
                 }));
+                setGiveSips(prev => [
+                  ...prev,
+                  {
+                    player: playerWithTheSameCard,
+                    sips: card.action.number
+                  }
+                ]);
+                // TODO: REPATED CODE - CHANGE
+                const newPlayers = players.map(player => {
+                  if (player.id === playerWithTheSameCard.id) {
+                    player.sips = player.sips + card.action.number;
+
+                    const isThisPlayerAlreadyInSipsInfo =
+                      sipsInfo.findIndex(
+                        sipInfo =>
+                          sipInfo.name.toLowerCase() ===
+                          player.name.toLowerCase()
+                      ) !== -1;
+
+                    if (isThisPlayerAlreadyInSipsInfo) {
+                      const newSipsInfo = sipsInfo.map(sipInfo => {
+                        if (sipInfo.name === player.name) {
+                          sipInfo.sips = sipInfo.sips + card.action.number;
+                        }
+                        return sipInfo;
+                      });
+                      setSipsInfo([...newSipsInfo]);
+                    } else {
+                      const newSipsInfoElement = {
+                        name: player.name,
+                        sips: card.action.number
+                      };
+                      setSipsInfo(prev => [...prev, newSipsInfoElement]);
+                    }
+                  }
+                  return player;
+                });
+
+                setPlayers([...newPlayers]);
               }
             }
           });
@@ -163,15 +218,6 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
       }
 
       //
-      if (card.action.type === "kierowca") {
-        setTimeout(() => {
-          setGame(prev => ({
-            ...prev,
-            gameBoardVisible: false,
-            kierowcaAutubusuScreenVisible: true
-          }));
-        }, 1000);
-      }
 
       const newCardsOnTable = game.cardsOnTable.map(card => {
         if (card.id === cardId) {
