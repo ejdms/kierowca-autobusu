@@ -96,7 +96,7 @@ ul {
   &:before {
     position: absolute;
     z-index: -1;
-    content: "";
+    content: '';
     left: 0;
     top: 0;
     width: 100%;
@@ -166,7 +166,7 @@ ul {
         }
 
         &.addNew {
-          input[type="text"] {
+          input[type='text'] {
             width: 80%;
             display: block;
           }
@@ -427,7 +427,7 @@ ul {
     position: relative;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: 0;

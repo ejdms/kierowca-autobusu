@@ -1,61 +1,61 @@
-import React from "react";
-import AddPlayerCard from "./AddPlayerCard";
-import Button from "./Button";
-import createPlayer from "../functions/createPlayer";
+import React from 'react'
+import AddPlayerCard from '../components/AddPlayerCard'
+import Button from '../components/Button'
+import createPlayer from '../functions/createPlayer'
 
 const StartScreen = ({ game, setGame, players, setPlayers }) => {
-  const { numberOfPlayers } = game;
+  const { numberOfPlayers } = game
   const handleAddPlayer = (name, resetName) => {
-    let allowToAddPlayer = true;
+    let allowToAddPlayer = true
     if (players.length) {
-      players.forEach(player => {
+      players.forEach((player) => {
         if (player.name.toLowerCase() === name.toLowerCase()) {
-          allowToAddPlayer = false;
+          allowToAddPlayer = false
         }
-      });
+      })
     }
     if (name && allowToAddPlayer) {
       const newPlayer = createPlayer({
         name,
         id: numberOfPlayers + 1,
-        cards: []
-      });
-      setPlayers(prev => [...prev, newPlayer]);
-      resetName();
-      setGame(prev => ({
+        cards: [],
+      })
+      setPlayers((prev) => [...prev, newPlayer])
+      resetName()
+      setGame((prev) => ({
         ...prev,
-        numberOfPlayers: prev.numberOfPlayers + 1
-      }));
+        numberOfPlayers: prev.numberOfPlayers + 1,
+      }))
     }
-  };
+  }
   //
-  const handleRemovePlayer = id => {
-    const newPlayers = players.filter(player => player.id !== id);
-    setPlayers([...newPlayers]);
-    setGame(prev => ({
+  const handleRemovePlayer = (id) => {
+    const newPlayers = players.filter((player) => player.id !== id)
+    setPlayers([...newPlayers])
+    setGame((prev) => ({
       ...prev,
-      numberOfPlayers: prev.numberOfPlayers - 1
-    }));
-  };
+      numberOfPlayers: prev.numberOfPlayers - 1,
+    }))
+  }
   //
   const startGame = () => {
     if (game.numberOfPlayers > 1) {
-      setGame(prev => ({
+      setGame((prev) => ({
         ...prev,
         startScreenVisible: false,
-        gameInitialPhaseScreenVisible: true
-      }));
+        gameInitialPhaseScreenVisible: true,
+      }))
     }
-  };
+  }
   //
-  const userCards = players.map(player => (
+  const userCards = players.map((player) => (
     <AddPlayerCard
       name={player.name}
       id={player.id}
       key={player.id}
       handleRemovePlayer={handleRemovePlayer}
     />
-  ));
+  ))
   //
   return (
     <div className="start-screen">
@@ -71,7 +71,7 @@ const StartScreen = ({ game, setGame, players, setPlayers }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default StartScreen;
+export default StartScreen

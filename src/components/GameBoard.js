@@ -1,276 +1,274 @@
-import React, { useState, useEffect } from "react";
-import PlayerHand from "./PlayerHand";
-import GameTable from "./GameTable";
-import Card from "./Card";
+import React, { useState, useEffect } from 'react'
+import PlayerHand from './PlayerHand'
+import GameTable from './GameTable'
+import Card from './Card'
 
 const GameBoard = ({ game, setGame, players, setPlayers }) => {
   const initialStates = {
-    btnText: "Next card",
+    btnText: 'Next card',
     canClickOnButton: true,
     giveSips: [],
     giveSipsNumber: 0,
     giveSipsNumberSelected: 0,
     sipsInfo: [],
-    forceEnd: false
-  };
-  const [btnText, setBtnText] = useState(initialStates.btnText);
+    forceEnd: false,
+  }
+  const [btnText, setBtnText] = useState(initialStates.btnText)
   const [canClickOnButton, setCanClickOnButton] = useState(
     initialStates.canClickOnButton
-  );
-  const [giveSips, setGiveSips] = useState(initialStates.giveSips);
+  )
+  const [giveSips, setGiveSips] = useState(initialStates.giveSips)
 
   const [giveSipsNumber, setGiveSipsNumber] = useState(
     initialStates.giveSipsNumber
-  );
+  )
   const [giveSipsNumberSelected, setGiveSipsNumberSelected] = useState(
     initialStates.giveSipsNumberSelected
-  );
-  const [sipsInfo, setSipsInfo] = useState(initialStates.sipsInfo);
-  const [forceEnd, setForceEnd] = useState(initialStates.forceEnd);
+  )
+  const [sipsInfo, setSipsInfo] = useState(initialStates.sipsInfo)
+  const [forceEnd, setForceEnd] = useState(initialStates.forceEnd)
 
   //RESET
   const reset = () => {
-    setBtnText(initialStates.btnText);
-    setCanClickOnButton(initialStates.canClickOnButton);
-    setGiveSips(initialStates.giveSips);
-  };
+    setBtnText(initialStates.btnText)
+    setCanClickOnButton(initialStates.canClickOnButton)
+    setGiveSips(initialStates.giveSips)
+  }
+
   useEffect(() => {
-    reset();
-  }, []);
-  useEffect(() => {
+    reset()
     return () => {
-      reset();
-    };
-  }, []);
-  // /RESET
+      reset()
+    }
+  }, [])
 
   const changeScreenToKierowca = () => {
     setTimeout(() => {
-      setGame(prev => ({
+      setGame((prev) => ({
         ...prev,
         gameBoardVisible: false,
-        kierowcaAutubusuScreenVisible: true
-      }));
-    }, 1000);
-  };
+        kierowcaAutubusuScreenVisible: true,
+      }))
+    }, 1000)
+  }
 
   useEffect(() => {
     if (giveSips.length) {
-      setCanClickOnButton(false);
+      setCanClickOnButton(false)
 
       // alow click on player hand but not on current player hand
-      const currentPlayer = giveSips[0].player;
-      const sips = giveSips[0].sips;
+      const currentPlayer = giveSips[0].player
+      const sips = giveSips[0].sips
       setPlayers([
-        ...players.map(player => {
-          player.canClickOnHand = !(player.id === currentPlayer.id);
-          return player;
-        })
-      ]);
-      setGiveSipsNumber(sips);
-      setGiveSipsNumberSelected(1);
+        ...players.map((player) => {
+          player.canClickOnHand = !(player.id === currentPlayer.id)
+          return player
+        }),
+      ])
+      setGiveSipsNumber(sips)
+      setGiveSipsNumberSelected(1)
     } else {
-      setCanClickOnButton(true);
+      setCanClickOnButton(true)
       setPlayers([
-        ...players.map(player => {
-          player.canClickOnHand = false;
-          return player;
-        })
-      ]);
+        ...players.map((player) => {
+          player.canClickOnHand = false
+          return player
+        }),
+      ])
 
       const thereIsInactiveCardOnTable =
-        game.cardsOnTable.findIndex(card => !card.active) !== -1;
+        game.cardsOnTable.findIndex((card) => !card.active) !== -1
 
       if (!thereIsInactiveCardOnTable) {
-        changeScreenToKierowca();
+        changeScreenToKierowca()
       }
     }
-  }, [giveSips]);
+  }, [giveSips])
 
   useEffect(() => {
     if (forceEnd) {
-      changeScreenToKierowca();
+      changeScreenToKierowca()
     }
-  }, [forceEnd]);
+  }, [forceEnd])
 
-  const handleChangeSipsNumberToGive = e => {
-    const number = e.target.value;
-    setGiveSipsNumberSelected(number);
-  };
+  const handleChangeSipsNumberToGive = (e) => {
+    const number = e.target.value
+    setGiveSipsNumberSelected(number)
+  }
 
   const handleClickOnNextCardBtn = () => {
-    setSipsInfo([]);
-    const cardIndex = game.cardsOnTable.findIndex(card => !card.active);
+    setSipsInfo([])
+    const cardIndex = game.cardsOnTable.findIndex((card) => !card.active)
 
     if (cardIndex !== -1) {
-      const card = game.cardsOnTable[cardIndex];
-      const cardId = card.id;
+      const card = game.cardsOnTable[cardIndex]
+      const cardId = card.id
 
-      const playersThatHaveTheSameCard = players.filter(player => {
-        let sameCard = false;
-        const symbol = card.symbol;
-        player.cards.forEach(card => {
+      const playersThatHaveTheSameCard = players.filter((player) => {
+        let sameCard = false
+        const symbol = card.symbol
+        player.cards.forEach((card) => {
           if (card.symbol === symbol) {
-            sameCard = true;
+            sameCard = true
           }
-        });
+        })
         if (sameCard) {
-          return player;
+          return player
         }
-      });
+      })
 
       if (playersThatHaveTheSameCard.length) {
-        playersThatHaveTheSameCard.forEach(playerWithTheSameCard => {
-          const playerCards = [...playerWithTheSameCard.cards];
+        playersThatHaveTheSameCard.forEach((playerWithTheSameCard) => {
+          const playerCards = [...playerWithTheSameCard.cards]
 
           playerCards.forEach((playerCard, i) => {
             if (playerCard.symbol === card.symbol) {
-              if (card.action.type === "drink") {
+              if (card.action.type === 'drink') {
                 //TODO: CHANGE THIS TO FN TO NOT REPEAT CODE
-                const newPlayers = players.map(player => {
+                const newPlayers = players.map((player) => {
                   if (player.id === playerWithTheSameCard.id) {
-                    player.sips = player.sips + card.action.number;
+                    player.sips = player.sips + card.action.number
 
                     const isThisPlayerAlreadyInSipsInfo =
                       sipsInfo.findIndex(
-                        sipInfo =>
+                        (sipInfo) =>
                           sipInfo.name.toLowerCase() ===
                           player.name.toLowerCase()
-                      ) !== -1;
+                      ) !== -1
 
                     if (isThisPlayerAlreadyInSipsInfo) {
-                      const newSipsInfo = sipsInfo.map(sipInfo => {
+                      const newSipsInfo = sipsInfo.map((sipInfo) => {
                         if (sipInfo.name === player.name) {
-                          sipInfo.sips = sipInfo.sips + card.action.number;
+                          sipInfo.sips = sipInfo.sips + card.action.number
                         }
-                        return sipInfo;
-                      });
-                      setSipsInfo([...newSipsInfo]);
+                        return sipInfo
+                      })
+                      setSipsInfo([...newSipsInfo])
                     } else {
                       const newSipsInfoElement = {
                         name: player.name,
-                        sips: card.action.number
-                      };
-                      setSipsInfo(prev => [...prev, newSipsInfoElement]);
+                        sips: card.action.number,
+                      }
+                      setSipsInfo((prev) => [...prev, newSipsInfoElement])
                     }
                   }
-                  return player;
-                });
+                  return player
+                })
 
-                setPlayers([...newPlayers]);
-              } else if (card.action.type === "give") {
+                setPlayers([...newPlayers])
+              } else if (card.action.type === 'give') {
                 // THIS SECTION CAN BE COMMENTED FOR EASIER DEVELOPMENT
                 // UNCOMMENT FOR CORRECT GAMEPLAY
                 //
-                setGiveSips(prev => [
+                setGiveSips((prev) => [
                   ...prev,
                   {
                     player: playerWithTheSameCard,
-                    sips: card.action.number
-                  }
-                ]);
-              } else if (card.action.type === "kierowca") {
-                setGame(prev => ({
+                    sips: card.action.number,
+                  },
+                ])
+              } else if (card.action.type === 'kierowca') {
+                setGame((prev) => ({
                   ...prev,
                   playersWithKierowca: [
                     ...prev.playersWithKierowca,
-                    playerWithTheSameCard
-                  ]
-                }));
-                setGiveSips(prev => [
+                    playerWithTheSameCard,
+                  ],
+                }))
+                setGiveSips((prev) => [
                   ...prev,
                   {
                     player: playerWithTheSameCard,
-                    sips: card.action.number
-                  }
-                ]);
+                    sips: card.action.number,
+                  },
+                ])
                 // TODO: REPATED CODE - CHANGE
-                const newPlayers = players.map(player => {
+                const newPlayers = players.map((player) => {
                   if (player.id === playerWithTheSameCard.id) {
-                    player.sips = player.sips + card.action.number;
+                    player.sips = player.sips + card.action.number
 
                     const isThisPlayerAlreadyInSipsInfo =
                       sipsInfo.findIndex(
-                        sipInfo =>
+                        (sipInfo) =>
                           sipInfo.name.toLowerCase() ===
                           player.name.toLowerCase()
-                      ) !== -1;
+                      ) !== -1
 
                     if (isThisPlayerAlreadyInSipsInfo) {
-                      const newSipsInfo = sipsInfo.map(sipInfo => {
+                      const newSipsInfo = sipsInfo.map((sipInfo) => {
                         if (sipInfo.name === player.name) {
-                          sipInfo.sips = sipInfo.sips + card.action.number;
+                          sipInfo.sips = sipInfo.sips + card.action.number
                         }
-                        return sipInfo;
-                      });
-                      setSipsInfo([...newSipsInfo]);
+                        return sipInfo
+                      })
+                      setSipsInfo([...newSipsInfo])
                     } else {
                       const newSipsInfoElement = {
                         name: player.name,
-                        sips: card.action.number
-                      };
-                      setSipsInfo(prev => [...prev, newSipsInfoElement]);
+                        sips: card.action.number,
+                      }
+                      setSipsInfo((prev) => [...prev, newSipsInfoElement])
                     }
                   }
-                  return player;
-                });
+                  return player
+                })
 
-                setPlayers([...newPlayers]);
+                setPlayers([...newPlayers])
               }
             }
-          });
-        });
+          })
+        })
       } else {
-        if (card.action.type === "kierowca") {
-          setForceEnd(true);
+        if (card.action.type === 'kierowca') {
+          setForceEnd(true)
         }
       }
 
       //
 
-      const newCardsOnTable = game.cardsOnTable.map(card => {
+      const newCardsOnTable = game.cardsOnTable.map((card) => {
         if (card.id === cardId) {
-          card.active = true;
+          card.active = true
         }
-        return card;
-      });
-      setGame(prev => ({
+        return card
+      })
+      setGame((prev) => ({
         ...prev,
-        cardsOnTable: [...newCardsOnTable]
-      }));
+        cardsOnTable: [...newCardsOnTable],
+      }))
     }
-  };
+  }
 
-  const handleClickOnPlayer = id => {
+  const handleClickOnPlayer = (id) => {
     if (giveSips.length) {
-      const sips = parseInt(giveSipsNumberSelected);
+      const sips = parseInt(giveSipsNumberSelected)
 
-      const newPlayers = players.map(player => {
+      const newPlayers = players.map((player) => {
         if (player.id === id) {
-          player.sips = player.sips + sips;
+          player.sips = player.sips + sips
         }
-        return player;
-      });
-      setPlayers([...newPlayers]);
+        return player
+      })
+      setPlayers([...newPlayers])
 
       const newGiveSips =
         sips === giveSipsNumber
           ? giveSips.filter((sip, index) => index !== 0)
           : giveSips.map((sip, index) => {
               if (index === 0) {
-                sip.sips = sip.sips - sips;
+                sip.sips = sip.sips - sips
               }
-              return sip;
-            });
+              return sip
+            })
 
-      setGiveSips([...newGiveSips]);
+      setGiveSips([...newGiveSips])
 
-      setGiveSipsNumber(prev => prev - sips);
-      setGiveSipsNumberSelected(1);
+      setGiveSipsNumber((prev) => prev - sips)
+      setGiveSipsNumberSelected(1)
     }
-  };
+  }
 
-  const cardsOnTableNoRows = game.cardsOnTable.map(card => (
+  const cardsOnTableNoRows = game.cardsOnTable.map((card) => (
     <Card
       onHand={false}
       symbol={card.symbol}
@@ -279,7 +277,8 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
       active={card.active}
       action={card.action}
     />
-  ));
+  ))
+
   const cardsOnTableInRows = (
     <>
       <div className="row row-1">{cardsOnTableNoRows.splice(0, 1)}</div>
@@ -289,9 +288,9 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
       <div className="row row-5">{cardsOnTableNoRows.splice(0, 5)}</div>
       <div className="row row-1">{cardsOnTableNoRows.splice(0, 1)}</div>
     </>
-  );
+  )
 
-  const playersHands = players.map(player => {
+  const playersHands = players.map((player) => {
     return (
       <PlayerHand
         cards={player.cards}
@@ -302,8 +301,8 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
         canClickOnHand={player.canClickOnHand}
         click={() => handleClickOnPlayer(player.id)}
       />
-    );
-  });
+    )
+  })
   return (
     <GameTable
       canClickOnButton={canClickOnButton}
@@ -315,7 +314,7 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
       handleChangeSipsNumberToGive={handleChangeSipsNumberToGive}
       sipsInfo={sipsInfo}
     />
-  );
-};
+  )
+}
 
-export default GameBoard;
+export default GameBoard

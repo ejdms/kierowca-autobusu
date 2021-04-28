@@ -1,5 +1,5 @@
-import React from "react";
-import Button from "./Button";
+import React from 'react'
+import Button from './Button'
 
 const GameTable = ({
   btnText,
@@ -9,34 +9,37 @@ const GameTable = ({
   handleClickOnNextCardBtn,
   giveSipsNumber,
   handleChangeSipsNumberToGive,
-  sipsInfo
+  sipsInfo,
 }) => {
-  const sipsOptions = [];
+  const sipsOptions = []
   for (let i = 0; i < giveSipsNumber; i++) {
     sipsOptions.push(
       <option value={i + 1} key={i}>
         {i + 1}
       </option>
-    );
+    )
   }
+
   const sipsInfoText = sipsInfo.map((sipInfo, i) => (
     <li key={i}>
-      Player {sipInfo.name} drink {sipInfo.sips}{" "}
-      {sipInfo.sips === 1 ? "sip" : "sips"}
+      Player {sipInfo.name} drink {sipInfo.sips}{' '}
+      {sipInfo.sips === 1 ? 'sip' : 'sips'}
     </li>
-  ));
+  ))
+
   const giveSipsInfo = (
     <>
       <h3>Choose number of sips to give other player</h3>
       <select
         className="select"
         defaultValue={1}
-        onChange={e => handleChangeSipsNumberToGive(e)}
+        onChange={(e) => handleChangeSipsNumberToGive(e)}
       >
         {sipsOptions}
       </select>
     </>
-  );
+  )
+
   return (
     <div className="game-board">
       <div className="table">{cardsOnTableInRows}</div>
@@ -47,7 +50,7 @@ const GameTable = ({
           additionalClasses="big"
           click={() => {
             if (canClickOnButton) {
-              handleClickOnNextCardBtn();
+              handleClickOnNextCardBtn()
             }
           }}
         />
@@ -58,7 +61,7 @@ const GameTable = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default GameTable;
+export default GameTable
