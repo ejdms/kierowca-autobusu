@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/kierowca-autobusu/static/css/main.c9fc5594.chunk.css",
-    "main.js": "/kierowca-autobusu/static/js/main.e2f29ee3.chunk.js",
-    "main.js.map": "/kierowca-autobusu/static/js/main.e2f29ee3.chunk.js.map",
+    "main.css": "/kierowca-autobusu/static/css/main.0d6ae2bd.chunk.css",
+    "main.js": "/kierowca-autobusu/static/js/main.e6392f32.chunk.js",
+    "main.js.map": "/kierowca-autobusu/static/js/main.e6392f32.chunk.js.map",
     "runtime-main.js": "/kierowca-autobusu/static/js/runtime-main.452d2f0e.js",
     "runtime-main.js.map": "/kierowca-autobusu/static/js/runtime-main.452d2f0e.js.map",
     "static/js/2.d3d1f8ce.chunk.js": "/kierowca-autobusu/static/js/2.d3d1f8ce.chunk.js",
     "static/js/2.d3d1f8ce.chunk.js.map": "/kierowca-autobusu/static/js/2.d3d1f8ce.chunk.js.map",
     "index.html": "/kierowca-autobusu/index.html",
-    "precache-manifest.6969bdc14081f541a13df2248695a8b4.js": "/kierowca-autobusu/precache-manifest.6969bdc14081f541a13df2248695a8b4.js",
+    "precache-manifest.9f494ea69e03243c6325469d0ae8ac2e.js": "/kierowca-autobusu/precache-manifest.9f494ea69e03243c6325469d0ae8ac2e.js",
     "service-worker.js": "/kierowca-autobusu/service-worker.js",
-    "static/css/main.c9fc5594.chunk.css.map": "/kierowca-autobusu/static/css/main.c9fc5594.chunk.css.map",
+    "static/css/main.0d6ae2bd.chunk.css.map": "/kierowca-autobusu/static/css/main.0d6ae2bd.chunk.css.map",
     "static/js/2.d3d1f8ce.chunk.js.LICENSE": "/kierowca-autobusu/static/js/2.d3d1f8ce.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.452d2f0e.js",
     "static/js/2.d3d1f8ce.chunk.js",
-    "static/css/main.c9fc5594.chunk.css",
-    "static/js/main.e2f29ee3.chunk.js"
+    "static/css/main.0d6ae2bd.chunk.css",
+    "static/js/main.e6392f32.chunk.js"
   ]
 }
