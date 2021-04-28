@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import MainWrapper from './components/MainWrapper'
-import GameBoard from './components/GameBoard'
+import GameBoardScreen from './stages/GameBoardScreen'
 import StartScreen from './stages/StartScreen'
 import InitialPhaseScreen from './stages/InitialPhaseScreen'
 import KierowcaAutobusuPhaseScreen from './stages/KierowcaAutobusuPhaseScreen'
@@ -16,7 +16,7 @@ const App = () => {
     activeCard: null,
     startScreenVisible: true,
     gameInitialPhaseScreenVisible: false,
-    gameBoardVisible: false,
+    gameBoardScreenVisible: false,
     kierowcaAutubusuScreenVisible: false,
     playersWithKierowca: [],
   }
@@ -190,8 +190,8 @@ const App = () => {
           setPlayers={setPlayers}
         />
       )}
-      {game.gameBoardVisible && (
-        <GameBoard
+      {game.gameBoardScreenVisible && (
+        <GameBoardScreen
           game={game}
           setGame={setGame}
           players={players}

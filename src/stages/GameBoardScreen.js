@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import PlayerHand from './PlayerHand'
-import GameTable from './GameTable'
-import Card from './Card'
+import PlayerHand from '../components/PlayerHand'
+import GameTable from '../components/GameTable'
+import Card from '../components/Card'
 
 const GameBoard = ({ game, setGame, players, setPlayers }) => {
   const initialStates = {
@@ -46,7 +46,7 @@ const GameBoard = ({ game, setGame, players, setPlayers }) => {
     setTimeout(() => {
       setGame((prev) => ({
         ...prev,
-        gameBoardVisible: false,
+        gameBoardScreenVisible: false,
         kierowcaAutubusuScreenVisible: true,
       }))
     }, 1000)

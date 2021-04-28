@@ -42,7 +42,7 @@ const InitialPhaseScreen = ({ game, setGame, players, setPlayers }) => {
         setGame((prev) => ({
           ...prev,
           gameInitialPhaseScreenVisible: false,
-          gameBoardVisible: true,
+          gameBoardScreenVisible: true,
         }))
       } else {
         //take next player as current player
