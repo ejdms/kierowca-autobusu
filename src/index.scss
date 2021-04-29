@@ -43,6 +43,39 @@ ul {
   list-style-type: none;
 }
 
+.custom-checkbox {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0 5px;
+
+  .checkbox-body {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #fff;
+    position: relative;
+  }
+
+  input {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    pointer-events: none;
+    opacity: 0;
+
+    &:checked + .checkbox-body::before {
+      --size: 70%;
+
+      content: '';
+      width: var(--size);
+      height: var(--size);
+      background-color: #fff;
+      position: absolute;
+      top: calc((100% - var(--size)) / 2);
+      left: calc((100% - var(--size)) / 2);
+    }
+  }
+}
+
 .main-wrapper {
   width: 100%;
   min-height: 100vh;
@@ -89,10 +122,6 @@ ul {
   align-items: center;
   z-index: 1;
 
-  @include mobile {
-    padding: 20px 0;
-  }
-
   &:before {
     position: absolute;
     z-index: -1;
@@ -103,6 +132,20 @@ ul {
     height: 100%;
     display: block;
     background-color: $bgColor;
+  }
+
+  .shouldAlwaysBeKierowca-checkbox-wrapper {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+
+    > label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .filled {

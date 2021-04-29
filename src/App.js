@@ -19,6 +19,7 @@ const App = () => {
     gameBoardScreenVisible: false,
     kierowcaAutubusuScreenVisible: false,
     playersWithKierowca: [],
+    shouldAlwaysBeKierowca: true,
   }
   const [game, setGame] = useState({
     ...initialGameState,
@@ -97,7 +98,7 @@ const App = () => {
       }
     })
 
-    if (!playerWithKierowcaExisting) {
+    if (!playerWithKierowcaExisting && game.shouldAlwaysBeKierowca) {
       return recursiveFunction(recursiveFunction)
     }
 

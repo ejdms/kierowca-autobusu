@@ -1,6 +1,7 @@
 import React from 'react'
 import AddPlayerCard from '../components/AddPlayerCard'
 import Button from '../components/Button'
+import Checkbox from '../components/Checkbox'
 import createPlayer from '../functions/createPlayer'
 
 const StartScreen = ({ game, setGame, players, setPlayers }) => {
@@ -47,6 +48,13 @@ const StartScreen = ({ game, setGame, players, setPlayers }) => {
       }))
     }
   }
+
+  const handleCheckboxChange = (e) => {
+    setGame({
+      ...game,
+      shouldAlwaysBeKierowca: e.currentTarget.checked,
+    })
+  }
   //
   const userCards = players.map((player) => (
     <AddPlayerCard
@@ -68,6 +76,17 @@ const StartScreen = ({ game, setGame, players, setPlayers }) => {
         </div>
         <div className="bottom">
           <Button click={startGame} text="Start" />
+        </div>
+        <div className="shouldAlwaysBeKierowca-checkbox-wrapper">
+          <label>
+            <span>Should always be kierowca?</span>
+            <Checkbox
+              onChange={handleCheckboxChange}
+              checked={game.shouldAlwaysBeKierowca}
+              name="shouldAlwaysBeKierowca"
+              id="shouldAlwaysBeKierowca"
+            />
+          </label>
         </div>
       </div>
     </div>
