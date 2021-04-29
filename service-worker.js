@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/kierowca-autobusu/precache-manifest.9f494ea69e03243c6325469d0ae8ac2e.js"
+  "/kierowca-autobusu/precache-manifest.878a6397cc8df8d84470ff7215fdc57b.js"
 );
 
 self.addEventListener('message', (event) => {

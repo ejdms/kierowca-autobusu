@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "84849d6abb73cb14fc9349130bb51de0",
+    "revision": "a71acea2829d5e9a0f62fa126c0969c0",
     "url": "/kierowca-autobusu/index.html"
   },
   {
-    "revision": "5dc644a758ebc150e691",
-    "url": "/kierowca-autobusu/static/css/main.0d6ae2bd.chunk.css"
+    "revision": "949ee1faf78a8869eecc",
+    "url": "/kierowca-autobusu/static/css/main.521a4a0a.chunk.css"
   },
   {
     "revision": "a55ff93e4221a7508f09",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/kierowca-autobusu/static/js/2.d3d1f8ce.chunk.js.LICENSE"
   },
   {
-    "revision": "5dc644a758ebc150e691",
-    "url": "/kierowca-autobusu/static/js/main.e6392f32.chunk.js"
+    "revision": "949ee1faf78a8869eecc",
+    "url": "/kierowca-autobusu/static/js/main.c6442cf4.chunk.js"
   },
   {
     "revision": "ef1e73bb02158baa60ac",
